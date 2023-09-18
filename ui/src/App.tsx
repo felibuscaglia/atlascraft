@@ -1,11 +1,11 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import MapCreatorScreen from "screens/MapCreator";
+import AtlasCreatorScreen from "screens/AtlasCreator";
 
 const App = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<MapCreatorScreen />} />
+        <Route path="/" element={<AtlasCreatorScreen />} />
       </Routes>
     </Router>
   );

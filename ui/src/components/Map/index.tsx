@@ -1,6 +1,7 @@
 import "mapbox-gl/dist/mapbox-gl.css";
 import mapboxgl, { Map } from "mapbox-gl";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
+import FeatureList from "./FeatureList";
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN || "";
 
@@ -23,7 +24,11 @@ const MapComponent = () => {
     });
   }, [map]);
 
-  return <div ref={mapContainer} className="map-container" />;
+  return (
+    <div ref={mapContainer} className="map-container h-screen w-screen">
+      <FeatureList />
+    </div>
+  );
 };
 
 export default MapComponent;

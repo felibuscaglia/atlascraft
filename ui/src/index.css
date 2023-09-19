@@ -2,7 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  margin: 0;
+:root {
+  --font-family-titles: "Playfair Display", serif;
+  --font-family-text: "Questrial", sans-serif;
+
+  --text-color: #2a2a2a;
 }
 
+body {
+  margin: 0;
+  color: var(--text-color);
+}
+
+h1 {
+  font-family: var(--font-family-titles);
+}
+
+span,
+p {
+  font-family: var(--font-family-text);
+}

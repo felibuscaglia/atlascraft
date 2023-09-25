@@ -6,19 +6,36 @@
   --font-family-titles: "Playfair Display", serif;
   --font-family-text: "Questrial", sans-serif;
 
-  --text-color: #2a2a2a;
+  --primary-brand-color: #2a2a2a;
+  --highlight-color: #3a5ca9;
 }
 
 body {
   margin: 0;
-  color: var(--text-color);
+  color: var(--primary-brand-color);
 }
 
-h1 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-family-titles);
 }
 
 span,
-p {
+p,
+label,
+input,
+button {
   font-family: var(--font-family-text);
+}
+
+input {
+  outline: none;
+}
+
+button {
+  transition: 0.2s ease all;
 }

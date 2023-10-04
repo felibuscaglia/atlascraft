@@ -1,3 +1,2 @@
-import { SignInDto } from './sign-in.dto';
-
-export { SignInDto };
+export * from './sign-in.dto';
+export * from './sign-up.dto';

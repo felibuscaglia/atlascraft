@@ -14,4 +14,14 @@ export class UsersService {
       where: whereOptions,
     });
   }
+
+  public create(fullName: string, email: string, password: string) {
+    const newUser = new User();
+
+    newUser.fullName = fullName;
+    newUser.email = email;
+    newUser.password = password;
+
+    return this.usersRepository.save(newUser);
+  }
 }

@@ -8,6 +8,7 @@
 
   --primary-brand-color: #2a2a2a;
   --highlight-color: #3a5ca9;
+  --error-color: rgb(239 68 68);
 }
 
 body {

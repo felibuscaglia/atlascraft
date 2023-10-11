@@ -1,4 +1,5 @@
 import ErrorBanner from "./ErrorBanner";
+import { ClipLoader } from 'react-spinners';
 
 interface IAuthFormLayoutProps {
   children: React.ReactNode;
@@ -6,6 +7,7 @@ interface IAuthFormLayoutProps {
   submitBtnText: string;
   onSubmit: (e: React.FormEvent) => void;
   error?: string;
+  loading?: boolean;
 }
 
 const AuthFormLayout: React.FC<IAuthFormLayoutProps> = ({
@@ -14,6 +16,7 @@ const AuthFormLayout: React.FC<IAuthFormLayoutProps> = ({
   submitBtnText,
   onSubmit,
   error,
+  loading = false
 }) => {
   return (
     <div className="flex h-screen w-screen flex-col items-center justify-center gap-4">
@@ -25,7 +28,12 @@ const AuthFormLayout: React.FC<IAuthFormLayoutProps> = ({
           type="submit"
           className="mt-4 rounded border border-primary-brand-color bg-primary-brand-color p-4 font-titles text-white hover:bg-transparent hover:text-primary-brand-color"
         >
-          {submitBtnText}
+          {loading ? <ClipLoader
+            color='white'
+            size={20}
+            aria-label="Auth Form Loading Spinner"
+            data-testid="loader"
+          /> : submitBtnText}
         </button>
       </form>
     </div>

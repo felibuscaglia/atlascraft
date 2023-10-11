@@ -16,6 +16,7 @@ const SignInScreen = () => {
     password: "",
   });
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput({
@@ -27,9 +28,14 @@ const SignInScreen = () => {
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
+    setLoading(true);
+
     apiClient
       .post(API_PATHS.SIGN_IN, input)
-      .then(({ data }) => console.log(data))
+      .then(({ data }) => {
+        console.log(data);
+        setLoading(false);
+      })
       .catch((err) => {
         console.error(err);
         setError(
@@ -37,6 +43,7 @@ const SignInScreen = () => {
             ? UNAUTHORIZED_ERROR_MSG
             : UNEXPECTED_ERROR_MSG,
         );
+        setLoading(false);
       });
   };
 
@@ -46,6 +53,7 @@ const SignInScreen = () => {
       submitBtnText="Sign in"
       onSubmit={handleFormSubmit}
       error={error}
+      loading={loading}
     >
       <Input
         id="email"

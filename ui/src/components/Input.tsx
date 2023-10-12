@@ -6,6 +6,7 @@ interface IInputProps {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   error?: string;
+  required?: boolean;
 }
 
 const Input: React.FC<IInputProps> = ({
@@ -16,12 +17,13 @@ const Input: React.FC<IInputProps> = ({
   value,
   onChange,
   error,
+  required = true,
 }) => {
   return (
     <div className="w-full">
       <label className="text-small mb-1 block" htmlFor={id}>
         <span>{label}</span>
-        {error && <span className="text-error ml-1">— {error}</span>}
+        {error && <span className="ml-1 text-error">— {error}</span>}
       </label>
       <input
         className={`w-full rounded border ${
@@ -32,6 +34,7 @@ const Input: React.FC<IInputProps> = ({
         type={type}
         value={value}
         onChange={onChange}
+        required={required}
       />
     </div>
   );

@@ -9,7 +9,7 @@ import {
 } from "lib/constants/error-messages";
 import { API_PATHS, UI_PATHS } from "lib/constants/paths";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const SignInScreen = () => {
   const [input, setInput] = useState({
@@ -19,6 +19,9 @@ const SignInScreen = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  const isWelcomeSignIn = searchParams.get("welcomeUser") === "1";
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput({
@@ -53,6 +56,7 @@ const SignInScreen = () => {
       onSubmit={handleFormSubmit}
       error={error}
       loading={loading}
+      infoMsg={isWelcomeSignIn ? `Welcome to ${APP_NAME}. Sign in here.` : undefined}
     >
       <Input
         id="email"

@@ -7,8 +7,9 @@ import {
   UNAUTHORIZED_ERROR_MSG,
   UNEXPECTED_ERROR_MSG,
 } from "lib/constants/error-messages";
-import { API_PATHS } from "lib/constants/paths";
+import { API_PATHS, UI_PATHS } from "lib/constants/paths";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const SignInScreen = () => {
   const [input, setInput] = useState({
@@ -17,6 +18,7 @@ const SignInScreen = () => {
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput({
@@ -32,10 +34,7 @@ const SignInScreen = () => {
 
     apiClient
       .post(API_PATHS.SIGN_IN, input)
-      .then(({ data }) => {
-        console.log(data);
-        setLoading(false);
-      })
+      .then(() => navigate(UI_PATHS.HOME))
       .catch((err) => {
         console.error(err);
         setError(

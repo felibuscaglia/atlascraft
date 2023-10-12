@@ -1,18 +1,37 @@
-import { Body, Controller, Post, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards, Res } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard, RefreshJwtGuard } from './guards';
 import { SignUpDto } from './dto';
 import { CurrentUser } from './decorators';
 import { User } from 'entities';
+import { Response } from 'express';
+import { ConfigService } from '@nestjs/config';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly configService: ConfigService,
+  ) {}
 
   @UseGuards(LocalAuthGuard)
   @Post()
-  async login(@CurrentUser() user: User) {
-    return await this.authService.login(user);
+  async login(
+    @Res({ passthrough: true }) response: Response,
+    @CurrentUser() user: User,
+  ) {
+    const { accessToken, refreshToken } = await this.authService.login(user);
+
+    response.cookie('accessToken', accessToken, {
+      httpOnly: true,
+      domain: this.configService.get('UI_DOMAIN'),
+    });
+    response.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      domain: this.configService.get('UI_DOMAIN'),
+    });
+
+    return { accessToken, refreshToken };
   }
 
   @Post('sign-up')

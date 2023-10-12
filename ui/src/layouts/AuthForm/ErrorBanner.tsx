@@ -1,5 +1,3 @@
-import { AlertTriangle } from "react-feather";
-
 interface IAuthFormErrorBannerProps {
   error: string;
 }

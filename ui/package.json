@@ -12,7 +12,6 @@
     "axios": "^1.5.1",
     "mapbox-gl": "^2.15.0",
     "react": "^18.2.0",
-    "react-auth-kit": "2.12.7",
     "react-dom": "^18.2.0",
     "react-feather": "^2.0.10",
     "react-router-dom": "^6.15.0",

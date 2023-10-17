@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import Map from './Map.entity';
 
 @Entity()
 export class User {
@@ -13,6 +14,10 @@ export class User {
 
   @Column({ type: 'varchar', nullable: false })
   password: string;
+
+  @ManyToMany(() => Map)
+  @JoinTable({ name: "user_maps" })
+  maps: Map[];
 }
 
 export default User;

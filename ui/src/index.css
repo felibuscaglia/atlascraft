@@ -7,6 +7,7 @@
   --font-family-text: "Questrial", sans-serif;
 
   --primary-brand-color: #2a2a2a;
+  --secondary-brand-color: #f6f4ef;
   --highlight-color: #3a5ca9;
   --error-color: rgb(239 68 68);
 }
@@ -14,6 +15,7 @@
 body {
   margin: 0;
   color: var(--primary-brand-color);
+  background-color: var(--secondary-brand-color);
 }
 
 h1,

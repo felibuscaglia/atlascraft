@@ -5,6 +5,7 @@ module.exports = {
     extend: {
       colors: {
         "primary-brand-color": "var(--primary-brand-color)",
+        "secondary-brand-color": "var(--secondary-brand-color)",
         "highlight-color": "var(--highlight-color)",
         error: "var(--error-color)",
       },

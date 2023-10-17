@@ -1,8 +1,8 @@
+import AuthGuard from "guards/Auth";
+
 const HomeScreen = () => {
   return (
-    <div>
-      <h1>Home screen</h1>
-    </div>
+    <AuthGuard<any> apiPath="">{(data) => <h1>Home screen!</h1>}</AuthGuard>
   );
 };
 

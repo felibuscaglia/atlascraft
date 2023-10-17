@@ -41,7 +41,22 @@ export class AuthController {
 
   @UseGuards(RefreshJwtGuard)
   @Post('refresh')
-  async refreshToken(@CurrentUser() user: User) {
-    return this.authService.refreshToken(user);
+  async refreshToken(
+    @Res({ passthrough: true }) response: Response,
+    @CurrentUser() user: User,
+  ) {
+    const { refreshToken, accessToken } =
+      await this.authService.refreshToken(user);
+
+    response.cookie('accessToken', accessToken, {
+      httpOnly: true,
+      domain: this.configService.get('UI_DOMAIN'),
+    });
+    response.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      domain: this.configService.get('UI_DOMAIN'),
+    });
+
+    return { accessToken, refreshToken };
   }
 }

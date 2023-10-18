@@ -25,12 +25,6 @@ const useAxiosAuth = () => {
           await refreshTokens();
           return apiClient(prevRequest);
         }
-
-        if (err.response?.status === HttpStatusCode.Unauthorized) {
-          // TODO: Handle logic.
-        } else {
-          return Promise.reject(err);
-        }
       },
     );
 

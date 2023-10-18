@@ -1,3 +1,4 @@
+import PageHead from "components/PageHead";
 import useAxiosAuth from "lib/hooks/useAxiosAuth";
 import { useState, useEffect } from "react";
 import LoadingScreen from "screens/Loading";
@@ -20,14 +21,19 @@ const AuthGuard = <T,>({ children, apiPath }: IAuthGuardProps<T>) => {
         setApiData(data);
         setLoading(false);
       })
-      .catch((err) => console.error(err));
+      .catch((err) => console.error(err)); // TODO: Handle errors.
   }, []);
 
   if (loading) {
     return <LoadingScreen />;
   }
 
-  return <div >{children(apiData)}</div>;
+  return (
+    <div>
+      <PageHead />
+      {children(apiData)}
+    </div>
+  );
 };
 
 export default AuthGuard;

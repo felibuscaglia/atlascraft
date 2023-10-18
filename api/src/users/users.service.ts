@@ -9,9 +9,13 @@ export class UsersService {
     @InjectRepository(User) private readonly usersRepository: Repository<User>,
   ) {}
 
-  public findOne(whereOptions: FindOptionsWhere<User>) {
+  public findOne(
+    whereOptions: FindOptionsWhere<User>,
+    relations: string[] = [],
+  ) {
     return this.usersRepository.findOne({
       where: whereOptions,
+      relations,
     });
   }
 

@@ -14,7 +14,7 @@ export class MapsController {
   }
 
   @Post()
-  createMap(@CurrentUser() user: User) {
-    return this.mapsService.create(user);
+  createMap(@CurrentUser('id') userId: string) {
+    return this.mapsService.create(userId);
   }
 }

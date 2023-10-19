@@ -1,4 +1,10 @@
-import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import Map from './Map.entity';
 
 @Entity('user')
@@ -16,8 +22,12 @@ export class User {
   password: string;
 
   @ManyToMany(() => Map, (map) => map.users)
-  @JoinTable({ name: 'user_maps' })
-  maps: Map[]
+  @JoinTable({
+    name: 'user_maps',
+    joinColumn: { name: 'mapId', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'userId', referencedColumnName: 'id' },
+  })
+  maps: Map[];
 }
 
 export default User;

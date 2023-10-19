@@ -1,10 +1,11 @@
 import List from "components/List";
 import AuthGuard from "guards/Auth";
-import { API_PATHS } from "lib/constants/paths";
+import { API_PATHS, UI_PATHS } from "lib/constants/paths";
 import useAxiosAuth from "lib/hooks/useAxiosAuth";
 import { IListElement } from "lib/interfaces";
 import { IMap } from "lib/interfaces/entities";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const formatUserMapsAsListElements = (userMaps: IMap[]): IListElement[] => {
   return userMaps.map(({ name }) => ({
@@ -16,12 +17,15 @@ const HomeScreen = () => {
   const [creatingMap, setCreatingMap] = useState(false);
 
   const axiosAuth = useAxiosAuth();
+  const navigate = useNavigate();
 
   const createMap = () => {
     setCreatingMap(true);
     axiosAuth
       .post<IMap>(API_PATHS.CREATE_MAP)
-      .then(({ data }) => console.log(data.id))
+      .then(({ data }) =>
+        navigate(`/${UI_PATHS.EDIT_MAP.replace(":mapId", data.id)}`),
+      )
       .catch((err) => console.error(err));
   };
   return (

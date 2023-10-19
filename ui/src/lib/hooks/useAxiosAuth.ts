@@ -1,8 +1,8 @@
 import { HttpStatusCode } from "axios";
-import apiClient from "lib/axios/apiClient";
+import { authClient, apiClient } from "lib/axios/apiClient";
 import { API_PATHS, UI_PATHS } from "lib/constants/paths";
 import { useEffect } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 const useAxiosAuth = () => {
   const navigate = useNavigate();
@@ -11,22 +11,26 @@ const useAxiosAuth = () => {
     try {
       await apiClient.post(API_PATHS.REFRESH_TOKENS);
     } catch (err) {
-      console.error(err);
+      throw new Error("Unable to refresh tokens");
     }
   };
 
   useEffect(() => {
-    const responseInterceptor = apiClient.interceptors.response.use(
+    const responseInterceptor = authClient.interceptors.response.use(
       (res) => res,
       async (err) => {
         const prevRequest = err.config;
         if (
-          err.reponse?.status === HttpStatusCode.Unauthorized &&
+          err.response?.status === HttpStatusCode.Unauthorized &&
           !prevRequest.sent
         ) {
           prevRequest.sent = true;
-          await refreshTokens();
-          return apiClient(prevRequest);
+
+          try {
+            await refreshTokens();
+          } catch (err) {}
+
+          return authClient(prevRequest);
         }
 
         if (err.response?.status === HttpStatusCode.Unauthorized) {
@@ -34,16 +38,15 @@ const useAxiosAuth = () => {
         } else {
           return Promise.reject(err);
         }
-
       },
     );
 
     return () => {
-      apiClient.interceptors.response.eject(responseInterceptor);
+      authClient.interceptors.response.eject(responseInterceptor);
     };
   }, []);
 
-  return apiClient;
+  return authClient;
 };
 
 export default useAxiosAuth;

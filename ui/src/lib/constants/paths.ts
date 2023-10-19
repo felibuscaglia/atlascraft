@@ -9,4 +9,5 @@ export const API_PATHS = {
   SIGN_UP: "/auth/sign-up",
   REFRESH_TOKENS: "/auth/refresh",
   GET_USER_MAPS: "/maps",
+  CREATE_MAP: "/maps",
 };

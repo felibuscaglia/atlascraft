@@ -1,7 +1,7 @@
 import { HttpStatusCode } from "axios";
 import Input from "components/Input";
 import AuthFormLayout from "layouts/AuthForm";
-import apiClient from "lib/axios/apiClient";
+import { apiClient } from "lib/axios/apiClient";
 import {
   UNEXPECTED_ERROR_MSG,
   USER_ALREADY_EXISTS_ERROR_MSG,

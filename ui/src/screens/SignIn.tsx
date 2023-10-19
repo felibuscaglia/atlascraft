@@ -1,7 +1,7 @@
 import { HttpStatusCode } from "axios";
 import Input from "components/Input";
 import AuthFormLayout from "layouts/AuthForm";
-import apiClient from "lib/axios/apiClient";
+import { apiClient } from "lib/axios/apiClient";
 import { APP_NAME } from "lib/constants/app-data";
 import {
   UNAUTHORIZED_ERROR_MSG,

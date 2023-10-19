@@ -1,10 +1,15 @@
 import { PassportStrategy } from '@nestjs/passport';
-import { ExtractJwt, Strategy } from 'passport-jwt';
+import { cookieExtractor } from 'auth/lib/helpers/cookie-extractor';
+import { Request } from 'express';
+import { Strategy } from 'passport-jwt';
 
-export class RefreshJwtStrategy extends PassportStrategy(Strategy, 'jwt-refresh') {
+export class RefreshJwtStrategy extends PassportStrategy(
+  Strategy,
+  'jwt-refresh',
+) {
   constructor() {
     super({
-      jwtFromRequest: ExtractJwt.fromBodyField("refreshToken"),
+      jwtFromRequest: (req: Request) => cookieExtractor(req, true),
       ignoreExpiration: false,
       secretOrKey: process.env.JWT_SECRET,
     });

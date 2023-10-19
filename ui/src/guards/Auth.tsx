@@ -21,7 +21,7 @@ const AuthGuard = <T,>({ children, apiPath }: IAuthGuardProps<T>) => {
         setApiData(data);
         setLoading(false);
       })
-      .catch((err) => console.error(err)); // TODO: Handle errors.
+      .catch((err) => console.error(err));
   }, []);
 
   if (loading) {

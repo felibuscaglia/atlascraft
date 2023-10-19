@@ -1,14 +1,20 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { CurrentUser } from 'auth/decorators';
 import { JwtGuard } from 'auth/guards';
 import { User } from 'entities';
+import { MapsService } from './maps.service';
 
 @Controller('maps')
 @UseGuards(JwtGuard)
 export class MapsController {
+  constructor(private readonly mapsService: MapsService) {}
   @Get()
   getUserMaps(@CurrentUser() user: User) {
-    console.log(user)
     return user.maps;
+  }
+
+  @Post()
+  createMap(@CurrentUser() user: User) {
+    return this.mapsService.create(user);
   }
 }

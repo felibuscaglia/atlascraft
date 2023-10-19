@@ -1,7 +1,7 @@
 import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
 import Map from './Map.entity';
 
-@Entity()
+@Entity('user')
 export class User {
   @PrimaryGeneratedColumn('uuid', { name: 'user_id' })
   id: string;
@@ -15,9 +15,9 @@ export class User {
   @Column({ type: 'varchar', nullable: false })
   password: string;
 
-  @ManyToMany(() => Map)
-  @JoinTable({ name: "user_maps" })
-  maps: Map[];
+  @ManyToMany(() => Map, (map) => map.users)
+  @JoinTable({ name: 'user_maps' })
+  maps: Map[]
 }
 
 export default User;

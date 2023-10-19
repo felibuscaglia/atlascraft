@@ -16,6 +16,8 @@ body {
   margin: 0;
   color: var(--primary-brand-color);
   background-color: var(--secondary-brand-color);
+  min-height: 100vh;
+  display: flex;
 }
 
 h1,
@@ -45,4 +47,10 @@ button {
 
 .capitalize-first::first-letter {
   text-transform: capitalize;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 }

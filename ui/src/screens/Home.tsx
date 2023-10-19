@@ -8,7 +8,7 @@ const HomeScreen = () => {
     <AuthGuard<IMap[]> apiPath={API_PATHS.GET_USER_MAPS}>
       {(userMaps) => (
         <div className="p-4">
-          <List title="Your maps" />
+          <List title="Your maps" actionBtnProps={{ text: "Create a new map" }} elements={[]} />
         </div>
       )}
     </AuthGuard>

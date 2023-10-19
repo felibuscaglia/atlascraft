@@ -57,6 +57,7 @@ const SignInScreen = () => {
       error={error}
       loading={loading}
       infoMsg={isWelcomeSignIn ? `Welcome to ${APP_NAME}. Sign in here.` : undefined}
+      isSignIn
     >
       <Input
         id="email"

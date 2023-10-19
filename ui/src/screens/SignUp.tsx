@@ -34,7 +34,7 @@ const SignUpScreen = () => {
 
     apiClient
       .post(API_PATHS.SIGN_UP, input)
-      .then((res) => navigate(`/${UI_PATHS.SIGN_IN}?welcomeUser=1`))
+      .then(() => navigate(`/${UI_PATHS.SIGN_IN}?welcomeUser=1`))
       .catch((err) => {
         const errorStatus = err?.response?.status;
         let errorMsg = UNEXPECTED_ERROR_MSG;

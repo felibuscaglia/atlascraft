@@ -1,9 +1,12 @@
 import { HttpStatusCode } from "axios";
 import apiClient from "lib/axios/apiClient";
-import { API_PATHS } from "lib/constants/paths";
+import { API_PATHS, UI_PATHS } from "lib/constants/paths";
 import { useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
 
 const useAxiosAuth = () => {
+  const navigate = useNavigate();
+
   const refreshTokens = async () => {
     try {
       await apiClient.post(API_PATHS.REFRESH_TOKENS);
@@ -25,6 +28,13 @@ const useAxiosAuth = () => {
           await refreshTokens();
           return apiClient(prevRequest);
         }
+
+        if (err.response?.status === HttpStatusCode.Unauthorized) {
+          navigate(UI_PATHS.SIGN_IN);
+        } else {
+          return Promise.reject(err);
+        }
+
       },
     );
 

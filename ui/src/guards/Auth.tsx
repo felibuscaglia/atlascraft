@@ -29,10 +29,10 @@ const AuthGuard = <T,>({ children, apiPath }: IAuthGuardProps<T>) => {
   }
 
   return (
-    <div>
+    <>
       <PageHead />
       {children(apiData)}
-    </div>
+    </>
   );
 };
 

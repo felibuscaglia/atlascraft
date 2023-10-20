@@ -2,6 +2,7 @@ import { SECONDARY_BRAND_COLOR } from "lib/constants/styles";
 import { IListElement } from "lib/interfaces";
 import { Plus } from "react-feather";
 import { ClipLoader } from "react-spinners";
+import Element from "./Element";
 
 interface IListProps {
   title: string;
@@ -41,13 +42,17 @@ const List: React.FC<IListProps> = ({
           )}
         </button>
       </section>
-      <div className="flex grow items-center justify-center">
+      <div className="flex grow">
         {elements.length ? (
-          <div></div>
+          <ul>
+            {elements.map((element, i) => <Element {...element} key={`list-element-${title}-${i}`} />)}
+          </ul>
         ) : (
-          <span className="font-titles text-3xl opacity-50">
-            {emptyPlaceholderText}
-          </span>
+          <div className="flex w-full items-center justify-center">
+            <span className="font-titles text-3xl opacity-50">
+              {emptyPlaceholderText}
+            </span>
+          </div>
         )}
       </div>
     </div>

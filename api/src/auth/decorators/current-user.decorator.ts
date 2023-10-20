@@ -4,8 +4,7 @@ import { Request } from 'express';
 
 export const CurrentUser = createParamDecorator(
   (data: string | undefined, ctx: ExecutionContext) => {
-    const request: Request & { user: User } = ctx.switchToHttp().getRequest();
-
-    return data ? request.user[data] : request.user;
+    const request: Request & { user: { email: string; user: User } } = ctx.switchToHttp().getRequest();
+    return data ? request.user?.user[data] : request.user;
   },
 );

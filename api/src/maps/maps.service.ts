@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Map, User } from 'entities';
-import { Repository } from 'typeorm';
+import { Repository, SelectQueryBuilder } from 'typeorm';
 import { DEFAULT_MAP_NAME } from './lib/constants';
 import { UsersService } from 'users/users.service';
 
@@ -10,7 +10,16 @@ export class MapsService {
   constructor(
     @InjectRepository(Map) private readonly mapsRepository: Repository<Map>,
     private readonly usersService: UsersService,
-  ) {}
+  ) { }
+
+  public findByUserId(userId: string) {
+    return this.mapsRepository
+      .createQueryBuilder('map')
+      .leftJoin('map.users', 'user')
+      .where('user.id = :id', { id: userId })
+      .getMany();
+
+  }
 
   public async create(ownerId: string) {
     const map = new Map();

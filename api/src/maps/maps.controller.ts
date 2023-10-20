@@ -9,8 +9,8 @@ import { MapsService } from './maps.service';
 export class MapsController {
   constructor(private readonly mapsService: MapsService) {}
   @Get()
-  getUserMaps(@CurrentUser() user: User) {
-    return user.maps;
+  getUserMaps(@CurrentUser('id') userId: string) {
+    return this.mapsService.findByUserId(userId);
   }
 
   @Post()

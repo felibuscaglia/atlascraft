@@ -5,6 +5,7 @@ import useAxiosAuth from "lib/hooks/useAxiosAuth";
 import { IListElement } from "lib/interfaces";
 import { IMap } from "lib/interfaces/entities";
 import { useState } from "react";
+import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 const formatUserMapsAsListElements = (userMaps: IMap[]): IListElement[] => {
@@ -26,7 +27,10 @@ const HomeScreen = () => {
       .then(({ data }) =>
         navigate(`/${UI_PATHS.EDIT_MAP.replace(":mapId", data.id)}`),
       )
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        toast.error('An unexpected error occurred. Please, try again later.');
+        setCreatingMap(false);
+      });
   };
   return (
     <AuthGuard<IMap[]> apiPath={API_PATHS.GET_USER_MAPS}>

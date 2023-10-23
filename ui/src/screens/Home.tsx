@@ -26,7 +26,7 @@ const HomeScreen = () => {
     axiosAuth
       .post<IMap>(API_PATHS.CREATE_MAP)
       .then(({ data }) =>
-        navigate(`/${UI_PATHS.EDIT_MAP.replace(":mapId", data.id)}`),
+        navigate(`${UI_PATHS.EDIT_MAP.replace(":mapId", data.id)}`),
       )
       .catch((err) => {
         toast.error("An unexpected error occurred. Please, try again later.");

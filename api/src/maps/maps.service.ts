@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Map, User } from 'entities';
-import { Repository, SelectQueryBuilder } from 'typeorm';
+import { FindOptionsWhere, Repository, SelectQueryBuilder } from 'typeorm';
 import { DEFAULT_MAP_NAME } from './lib/constants';
 import { UsersService } from 'users/users.service';
 
@@ -20,8 +20,14 @@ export class MapsService {
       .getMany();
   }
 
-  public findById(id: string) {
-    return this.mapsRepository.findOneBy({ id });
+  public findOne(
+    whereOptions: FindOptionsWhere<Map>,
+    relations: string[] = [],
+  ) {
+    return this.mapsRepository.findOne({
+      where: whereOptions,
+      relations,
+    });
   }
 
   public async create(ownerId: string) {

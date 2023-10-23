@@ -29,10 +29,8 @@ export class AuthService {
   public async login(user: User) {
     const payload = {
       email: user.email,
-      sub: {
-        fullName: user.fullName,
-        id: user.id
-      },
+      fullName: user.fullName,
+      id: user.id,
     };
 
     return {
@@ -67,10 +65,8 @@ export class AuthService {
   public async refreshToken(user: User) {
     const payload = {
       email: user.email,
-      sub: {
-        fullName: user.fullName,
-        id: user.id
-      },
+      fullName: user.fullName,
+      id: user.id,
     };
 
     return {

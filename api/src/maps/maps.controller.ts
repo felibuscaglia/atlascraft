@@ -9,6 +9,7 @@ import {
 import { CurrentUser } from 'auth/decorators';
 import { JwtGuard } from 'auth/guards';
 import { MapsService } from './maps.service';
+import { MapAuthGuard } from './guards';
 
 @Controller('maps')
 @UseGuards(JwtGuard)
@@ -19,15 +20,10 @@ export class MapsController {
     return this.mapsService.findByUserId(userId);
   }
 
+  @UseGuards(MapAuthGuard)
   @Get('/:mapId')
   async getMapById(@Param('mapId') mapId: string) {
-    const map = this.mapsService.findById(mapId);
-
-    if (map) {
-      return map;
-    } else {
-      throw new NotFoundException();
-    }
+    return this.mapsService.findOne({ id: mapId });
   }
 
   @Post()

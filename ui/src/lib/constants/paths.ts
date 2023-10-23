@@ -1,8 +1,8 @@
 export const UI_PATHS = {
-  SIGN_UP: "signup",
-  SIGN_IN: "signin",
+  SIGN_UP: "/signup",
+  SIGN_IN: "/signin",
   HOME: "/",
-  EDIT_MAP: "edit/:mapId",
+  EDIT_MAP: "/edit/:mapId",
 };
 
 export const API_PATHS = {
@@ -12,4 +12,5 @@ export const API_PATHS = {
   GET_USER_MAPS: "/maps",
   CREATE_MAP: "/maps",
   EDIT_MAP: "/edit",
+  GET_MAP: "/maps/:mapId",
 };

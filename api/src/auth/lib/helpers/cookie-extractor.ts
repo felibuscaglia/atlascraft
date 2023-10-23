@@ -8,11 +8,11 @@ export const cookieExtractor = (
   req: Request,
   isRefreshTokenStrategy = false,
 ) => {
-  return req && req.cookies
-    ? req.cookies[
-        isRefreshTokenStrategy
-          ? REFRESH_TOKEN_COOKIE_NAME
-          : ACCESS_TOKEN_COOKIE_NAME
-      ]
-    : null;
+  return (
+    req?.cookies[
+      isRefreshTokenStrategy
+        ? REFRESH_TOKEN_COOKIE_NAME
+        : ACCESS_TOKEN_COOKIE_NAME
+    ] ?? null
+  );
 };

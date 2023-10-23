@@ -1,4 +1,10 @@
-import { CanActivate, Injectable, ExecutionContext, NotFoundException } from '@nestjs/common';
+import {
+  CanActivate,
+  Injectable,
+  ExecutionContext,
+  NotFoundException,
+  ForbiddenException,
+} from '@nestjs/common';
 import { MapsService } from 'maps/maps.service';
 
 @Injectable()
@@ -7,11 +13,22 @@ export class MapAuthGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext) {
     const request = context.switchToHttp().getRequest();
-    const mapId = request.params.id;
-    const map = await this.mapsService.findById(mapId);
+    const mapId = request.params.mapId;
 
-    if(!map) {
-      throw new NotFoundException();
+    const map = await this.mapsService.findOne({ id: mapId }, ['users']);
+
+    if (!map) {
+      throw new NotFoundException('Map not found.');
+    }
+    const userId = request.user?.id;
+
+    const userOwnsMap =
+      userId && !!map.users.find((user) => user.id === userId);
+
+    if (!userOwnsMap) {
+      throw new ForbiddenException(
+        'User does not have edit rights for this map.',
+      );
     }
 
     return true;

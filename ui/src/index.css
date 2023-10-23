@@ -41,7 +41,8 @@ input {
   outline: none;
 }
 
-button {
+button,
+li {
   transition: 0.2s ease all;
 }
 

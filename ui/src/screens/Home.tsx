@@ -9,7 +9,8 @@ import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 const formatUserMapsAsListElements = (userMaps: IMap[]): IListElement[] => {
-  return userMaps.map(({ name }) => ({
+  return userMaps.map(({ name, id }) => ({
+    id,
     title: name,
   }));
 };
@@ -28,7 +29,7 @@ const HomeScreen = () => {
         navigate(`/${UI_PATHS.EDIT_MAP.replace(":mapId", data.id)}`),
       )
       .catch((err) => {
-        toast.error('An unexpected error occurred. Please, try again later.');
+        toast.error("An unexpected error occurred. Please, try again later.");
         setCreatingMap(false);
       });
   };
@@ -45,6 +46,7 @@ const HomeScreen = () => {
             }}
             elements={formatUserMapsAsListElements(userMaps || [])}
             emptyPlaceholderText="No maps created."
+            redirectUrlPrefix="edit"
           />
         </div>
       )}

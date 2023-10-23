@@ -10,7 +10,7 @@ export class MapsService {
   constructor(
     @InjectRepository(Map) private readonly mapsRepository: Repository<Map>,
     private readonly usersService: UsersService,
-  ) { }
+  ) {}
 
   public findByUserId(userId: string) {
     return this.mapsRepository
@@ -18,7 +18,10 @@ export class MapsService {
       .leftJoin('map.users', 'user')
       .where('user.id = :id', { id: userId })
       .getMany();
+  }
 
+  public findById(id: string) {
+    return this.mapsRepository.findOneBy({ id });
   }
 
   public async create(ownerId: string) {

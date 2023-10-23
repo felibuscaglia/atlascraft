@@ -13,6 +13,7 @@ interface IListProps {
   };
   elements: IListElement[];
   emptyPlaceholderText: string;
+  redirectUrlPrefix: string;
 }
 
 const List: React.FC<IListProps> = ({
@@ -20,6 +21,7 @@ const List: React.FC<IListProps> = ({
   actionBtnProps,
   elements = [],
   emptyPlaceholderText,
+  redirectUrlPrefix,
 }) => {
   return (
     <div className="flex h-full flex-col gap-4">
@@ -31,7 +33,7 @@ const List: React.FC<IListProps> = ({
           className="border border-primary-brand-color bg-primary-brand-color px-4 py-2 text-secondary-brand-color hover:bg-transparent hover:text-primary-brand-color disabled:cursor-not-allowed disabled:hover:bg-primary-brand-color"
         >
           {actionBtnProps.loading ? (
-            <div className="w-[150px] h-5 flex items-center justify-center">
+            <div className="flex h-5 w-[150px] items-center justify-center">
               <ClipLoader color={SECONDARY_BRAND_COLOR} size={16} />
             </div>
           ) : (
@@ -44,8 +46,14 @@ const List: React.FC<IListProps> = ({
       </section>
       <div className="flex grow">
         {elements.length ? (
-          <ul>
-            {elements.map((element, i) => <Element {...element} key={`list-element-${title}-${i}`} />)}
+          <ul className="w-full">
+            {elements.map((element, i) => (
+              <Element
+                redirectUrlPrefix={redirectUrlPrefix}
+                {...element}
+                key={`list-element-${title}-${i}`}
+              />
+            ))}
           </ul>
         ) : (
           <div className="flex w-full items-center justify-center">

@@ -34,7 +34,7 @@ p,
 label,
 input,
 button {
-  font-family: var(--font-family-text);
+  font-family: var(--font-family-text) !important;
 }
 
 input {
@@ -54,4 +54,35 @@ li {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+}
+
+/* Mapbox */
+
+.mapboxgl-ctrl-geocoder {
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  width: 100% !important;
+  max-width: 100% !important;
+  box-shadow: none !important;
+  border-radius: 2px 0 0 2px !important;
+}
+
+.mapboxgl-ctrl-geocoder--icon-search {
+  display: none !important;
+}
+
+.mapboxgl-ctrl-geocoder input[type="text"] {
+  outline: none;
+  line-height: 1.25rem;
+  height: 100%;
+  padding: 0.5rem;
+}
+
+.mapboxgl-ctrl button:not(:disabled):hover {
+  background: transparent !important;
+}
+
+.mapboxgl-ctrl-geocoder--button {
+  margin-top: 2.3px !important;
 }

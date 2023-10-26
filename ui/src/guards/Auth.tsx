@@ -1,11 +1,11 @@
 import PageHead from "components/PageHead";
 import useAxiosAuth from "lib/hooks/useAxiosAuth";
 import { useState, useEffect } from "react";
+import ErrorScreen from "screens/Error";
 import LoadingScreen from "screens/Loading";
-import NotFoundScreen from "screens/NotFound";
 
 interface IAuthGuardProps<T> {
-  children: (data: T | null) => React.ReactNode;
+  children: (data: T) => React.ReactNode;
   apiPath: string;
   displayPageHead?: boolean;
 }
@@ -32,14 +32,23 @@ const AuthGuard = <T,>({
         setNotFound(err.response?.status);
         setLoading(false);
       });
-  }, []);
+  }, [apiPath, authApiClient]);
 
   if (loading) {
     return <LoadingScreen />;
   }
 
   if (notFound) {
-    return <NotFoundScreen />;
+    return (
+      <ErrorScreen msg="Uh-oh. We couldn't find what you're looking for." />
+    );
+  }
+
+  // if apiData === null even though notFound !== true and loading !== true, then that's def an error.
+  if (apiData === null) {
+    return (
+      <ErrorScreen msg="Uh-oh. An unexpected error occurred. Please, try again later." />
+    );
   }
 
   return (

@@ -5,10 +5,11 @@ import { PlacesModule } from 'places/places.module';
 import { UsersModule } from 'users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Marker } from 'entities';
+import { MapsModule } from 'maps/maps.module';
 
 @Module({
   controllers: [MarkersController],
   providers: [MarkersService],
-  imports: [PlacesModule, UsersModule, TypeOrmModule.forFeature([Marker])],
+  imports: [PlacesModule, MapsModule, UsersModule, TypeOrmModule.forFeature([Marker])],
 })
 export class MarkersModule {}

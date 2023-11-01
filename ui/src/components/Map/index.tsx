@@ -10,10 +10,13 @@ import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
 import useAxiosAuth from "lib/hooks/useAxiosAuth";
 import { API_PATHS } from "lib/constants/paths";
+import { UNAUTHORIZED_MAP_ERROR_MSG, UNEXPECTED_ERROR_MSG } from "lib/constants/error-messages";
+import { HttpStatusCode } from "axios";
+import ErrorScreen from "screens/Error";
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN || "";
 
-const DEFAULT_ZOOM_LEVEL = 11;
+const DEFAULT_ZOOM_LEVEL = 1;
 const DEFAULT_LNG = -70.9;
 const DEFAULT_LAT = 42.35;
 
@@ -78,6 +81,8 @@ const initializeMap = (
     map.getContainer().appendChild(geocoderContainer);
     geocoderContainer.appendChild(searchBtn);
   });
+
+  return map;
 };
 
 interface IMapComponentProps {
@@ -86,6 +91,7 @@ interface IMapComponentProps {
 
 const MapComponent: React.FC<IMapComponentProps> = ({ map }) => {
   const [markers, setMarkers] = useState<IMarker[]>(map.markers);
+  const [error, setError] = useState<string | null>(null);
 
   const axiosAuth = useAxiosAuth();
 
@@ -102,16 +108,26 @@ const MapComponent: React.FC<IMapComponentProps> = ({ map }) => {
     };
 
     axiosAuth
-      .post(API_PATHS.SAVE_MARKER, body)
-      .then(({ data }) => console.log({ data }))
-      .catch((err) => console.error(err));
+      .post<IMarker>(API_PATHS.SAVE_MARKER, body)
+      .then(({ data }) => setMarkers((prevMarkers) => [...prevMarkers, data]))
+      .catch((err) => setError(err.response?.status === HttpStatusCode.Forbidden ? UNAUTHORIZED_MAP_ERROR_MSG : UNEXPECTED_ERROR_MSG));
   };
 
   useEffect(() => {
     if (!mapContainer.current) return;
 
-    initializeMap(mapContainer, saveMarker);
+    const map = initializeMap(mapContainer, saveMarker);
+
+    markers.forEach(({ place, customDisplayName }) => {
+      new mapboxgl.Marker()
+        .setLngLat([place.latitude, place.longitude])
+        .addTo(map);
+    });
   }, [map]);
+
+  if (error) {
+    return <ErrorScreen msg={error} />
+  }
 
   return (
     <div ref={mapContainer} className="map-container h-screen w-full">

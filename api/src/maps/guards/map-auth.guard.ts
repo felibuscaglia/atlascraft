@@ -20,6 +20,7 @@ export class MapAuthGuard implements CanActivate {
     if (!map) {
       throw new NotFoundException('Map not found.');
     }
+    
     const userId = request.user?.id;
 
     const userOwnsMap =

@@ -1,5 +1,6 @@
 import List from "components/List";
 import AuthGuard from "guards/Auth";
+import { UNEXPECTED_ERROR_MSG } from "lib/constants/error-messages";
 import { API_PATHS, UI_PATHS } from "lib/constants/paths";
 import useAxiosAuth from "lib/hooks/useAxiosAuth";
 import { IListElement } from "lib/interfaces";
@@ -29,10 +30,11 @@ const HomeScreen = () => {
         navigate(`${UI_PATHS.EDIT_MAP.replace(":mapId", data.id)}`),
       )
       .catch((err) => {
-        toast.error("An unexpected error occurred. Please, try again later.");
+        toast.error(UNEXPECTED_ERROR_MSG);
         setCreatingMap(false);
       });
   };
+
   return (
     <AuthGuard<IMap[]> apiPath={API_PATHS.GET_USER_MAPS}>
       {(userMaps) => (

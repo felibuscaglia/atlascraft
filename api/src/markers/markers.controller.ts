@@ -11,7 +11,8 @@ export class MarkersController {
 
   @Post()
   @UseGuards(MapAuthGuard)
-  saveMarker(@Body() saveMarkerDto: SaveMarkerDto) {
-    return this.markersService.save(saveMarkerDto);
+  async saveMarker(@Body() saveMarkerDto: SaveMarkerDto) {
+    const { map, ...marker } = await this.markersService.save(saveMarkerDto);
+    return marker;
   }
 }

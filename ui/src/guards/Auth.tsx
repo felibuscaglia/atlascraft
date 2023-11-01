@@ -1,3 +1,4 @@
+import { HttpStatusCode } from "axios";
 import PageHead from "components/PageHead";
 import useAxiosAuth from "lib/hooks/useAxiosAuth";
 import { useState, useEffect } from "react";
@@ -29,7 +30,7 @@ const AuthGuard = <T,>({
         setLoading(false);
       })
       .catch((err) => {
-        setNotFound(err.response?.status);
+        setNotFound(err.response?.status === HttpStatusCode.NotFound);
         setLoading(false);
       });
   }, [apiPath, authApiClient]);

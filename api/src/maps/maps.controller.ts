@@ -23,7 +23,7 @@ export class MapsController {
   @UseGuards(MapAuthGuard)
   @Get('/:mapId')
   async getMapById(@Param('mapId') mapId: string) {
-    return this.mapsService.findOne({ id: mapId });
+    return this.mapsService.findOne({ id: mapId }, ['markers']);
   }
 
   @Post()

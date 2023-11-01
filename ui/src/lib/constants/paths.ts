@@ -13,4 +13,5 @@ export const API_PATHS = {
   CREATE_MAP: "/maps",
   EDIT_MAP: "/edit",
   GET_MAP: "/maps/:mapId",
+  SAVE_MARKER: "/markers",
 };

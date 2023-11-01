@@ -4,4 +4,4 @@ import Place from './Place.entity';
 import Marker from './Marker.entity';
 
 export { User, Map, Place, Marker };
-export default [User, Map, Map, Marker];
+export default [User, Map, Place, Marker];

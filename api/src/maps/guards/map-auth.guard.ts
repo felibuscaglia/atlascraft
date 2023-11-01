@@ -13,7 +13,7 @@ export class MapAuthGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext) {
     const request = context.switchToHttp().getRequest();
-    const mapId = request.params.mapId;
+    const mapId = request.params.mapId ?? request.body.mapId;
 
     const map = await this.mapsService.findOne({ id: mapId }, ['users']);
 

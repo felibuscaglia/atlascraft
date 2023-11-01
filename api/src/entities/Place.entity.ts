@@ -13,6 +13,12 @@ class Place {
 
   @Column({ nullable: false })
   name: string;
+
+  @Column({ nullable: false, type: 'float' })
+  latitude: number;
+
+  @Column({ nullable: false, type: 'float' })
+  longitude: number;
 }
 
 export default Place;

@@ -5,6 +5,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { MapsModule } from './maps/maps.module';
+import { MarkersModule } from './markers/markers.module';
+import { PlacesModule } from './places/places.module';
 import entities from './entities';
 
 @Module({
@@ -27,6 +29,8 @@ import entities from './entities';
     AuthModule,
     UsersModule,
     MapsModule,
+    MarkersModule,
+    PlacesModule,
   ],
   controllers: [AppController],
   providers: [],

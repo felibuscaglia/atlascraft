@@ -1,13 +1,15 @@
 import "mapbox-gl/dist/mapbox-gl.css";
 import mapboxgl, { LngLatLike } from "mapbox-gl";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import FeatureList from "./FeatureList";
-import { IMap } from "lib/interfaces/entities";
+import { IMap, IMarker } from "lib/interfaces/entities";
 import ReactDOMServer from "react-dom/server";
 import { Search } from "react-feather";
 import { SECONDARY_BRAND_COLOR } from "lib/constants/styles";
 import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
+import useAxiosAuth from "lib/hooks/useAxiosAuth";
+import { API_PATHS } from "lib/constants/paths";
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN || "";
 
@@ -17,7 +19,7 @@ const DEFAULT_LAT = 42.35;
 
 const initializeMap = (
   mapContainerRef: React.RefObject<HTMLDivElement>,
-  setSelectedPlaces: React.Dispatch<React.SetStateAction<any>>,
+  saveMarker: (result: MapboxGeocoder.Result) => void,
 ) => {
   const map = new mapboxgl.Map({
     container: mapContainerRef.current!,
@@ -47,19 +49,27 @@ const initializeMap = (
 
   geocoder.on("result", (event: { result: MapboxGeocoder.Result }) => {
     const { center, place_name, text } = event.result;
-    console.log(event.result);
+
+    const popupContent = document.createElement("div");
+    popupContent.innerHTML = `
+    <div>
+      <section>
+        <h1>${text}</h1>
+        <p>${place_name}</p>
+      </section>
+      <button class='add-btn'>+ Add to map</button>
+    </div>
+  `;
+
+    const addButton = popupContent.querySelector(".add-btn");
+
+    if (addButton) {
+      addButton.addEventListener("click", () => saveMarker(event.result));
+    }
 
     new mapboxgl.Popup({ closeOnClick: true })
       .setLngLat(center as LngLatLike)
-      .setHTML(
-        `<div>
-          <section>
-            <h1 className='font-title'>${text}</h1>
-            <p>${place_name}</p>
-          </section>
-          <button className='add-btn'>+ Add to map</button>        
-        </div>`,
-      )
+      .setDOMContent(popupContent)
       .addTo(map);
   });
 
@@ -75,12 +85,32 @@ interface IMapComponentProps {
 }
 
 const MapComponent: React.FC<IMapComponentProps> = ({ map }) => {
+  const [markers, setMarkers] = useState<IMarker[]>(map.markers);
+
+  const axiosAuth = useAxiosAuth();
+
   const mapContainer = useRef<HTMLDivElement | null>(null);
+
+  const saveMarker = (result: MapboxGeocoder.Result) => {
+    const body = {
+      latitude: result.center[0],
+      longitude: result.center[1],
+      displayName: result.text,
+      name: result.place_name,
+      externalId: result.id,
+      mapId: map.id,
+    };
+
+    axiosAuth
+      .post(API_PATHS.SAVE_MARKER, body)
+      .then(({ data }) => console.log({ data }))
+      .catch((err) => console.error(err));
+  };
 
   useEffect(() => {
     if (!mapContainer.current) return;
 
-    initializeMap(mapContainer, () => {});
+    initializeMap(mapContainer, saveMarker);
   }, [map]);
 
   return (

@@ -8,7 +8,7 @@ import {
 import Map from './Map.entity';
 
 @Entity('user')
-export class User {
+class User {
   @PrimaryGeneratedColumn('uuid', { name: 'user_id' })
   id: string;
 

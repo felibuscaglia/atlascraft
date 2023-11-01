@@ -1,6 +1,6 @@
 import "mapbox-gl/dist/mapbox-gl.css";
-import mapboxgl, { Map } from "mapbox-gl";
-import { useEffect, useRef, useState } from "react";
+import mapboxgl, { LngLatLike } from "mapbox-gl";
+import { useEffect, useRef } from "react";
 import FeatureList from "./FeatureList";
 import { IMap } from "lib/interfaces/entities";
 import ReactDOMServer from "react-dom/server";
@@ -15,7 +15,10 @@ const DEFAULT_ZOOM_LEVEL = 11;
 const DEFAULT_LNG = -70.9;
 const DEFAULT_LAT = 42.35;
 
-const initializeMap = (mapContainerRef: React.RefObject<HTMLDivElement>) => {
+const initializeMap = (
+  mapContainerRef: React.RefObject<HTMLDivElement>,
+  setSelectedPlaces: React.Dispatch<React.SetStateAction<any>>,
+) => {
   const map = new mapboxgl.Map({
     container: mapContainerRef.current!,
     style: "mapbox://styles/mapbox/streets-v12",
@@ -29,7 +32,8 @@ const initializeMap = (mapContainerRef: React.RefObject<HTMLDivElement>) => {
     "flex items-center top-20 fixed right-4 w-3/12 rounded-sm";
 
   const searchBtn = document.createElement("button");
-  searchBtn.className = "h-10 bg-primary-brand-color px-4 relative rounded-r-sm";
+  searchBtn.className =
+    "h-10 bg-primary-brand-color px-4 relative rounded-r-sm";
   const searchIconHTML = ReactDOMServer.renderToString(
     <Search size={20} color={SECONDARY_BRAND_COLOR} />,
   );
@@ -41,11 +45,21 @@ const initializeMap = (mapContainerRef: React.RefObject<HTMLDivElement>) => {
     placeholder: "Search for places around the world",
   });
 
-  geocoder.on("result", (event) => {
-    const { center, place_name } = event.result;
+  geocoder.on("result", (event: { result: MapboxGeocoder.Result }) => {
+    const { center, place_name, text } = event.result;
+    console.log(event.result);
+
     new mapboxgl.Popup({ closeOnClick: true })
-      .setLngLat(center)
-      .setHTML(`<h1 className='font-title'>${place_name}</h1>`)
+      .setLngLat(center as LngLatLike)
+      .setHTML(
+        `<div>
+          <section>
+            <h1 className='font-title'>${text}</h1>
+            <p>${place_name}</p>
+          </section>
+          <button className='add-btn'>+ Add to map</button>        
+        </div>`,
+      )
       .addTo(map);
   });
 
@@ -66,7 +80,7 @@ const MapComponent: React.FC<IMapComponentProps> = ({ map }) => {
   useEffect(() => {
     if (!mapContainer.current) return;
 
-    initializeMap(mapContainer);
+    initializeMap(mapContainer, () => {});
   }, [map]);
 
   return (

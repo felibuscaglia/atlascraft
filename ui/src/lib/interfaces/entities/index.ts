@@ -1,6 +1,2 @@
-export interface IMap {
-  id: string;
-  name: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
+export * from "./Map.interface";
+export * from "./Place.interface";

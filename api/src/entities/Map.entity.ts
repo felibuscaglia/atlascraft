@@ -5,8 +5,10 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToMany,
+  OneToMany,
 } from 'typeorm';
 import User from './User.entity';
+import Marker from './Marker.entity';
 
 @Entity('map')
 class Map {
@@ -24,6 +26,9 @@ class Map {
 
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
+
+  @OneToMany(() => Marker, (marker) => marker.map)
+  markers: Marker[];
 }
 
 export default Map;

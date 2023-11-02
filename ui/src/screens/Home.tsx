@@ -18,6 +18,7 @@ const formatUserMapsAsListElements = (userMaps: IMap[]): IListElement[] => {
 
 const HomeScreen = () => {
   const [creatingMap, setCreatingMap] = useState(false);
+  const [userMaps, setUserMaps] = useState<IMap[]>([]);
 
   const axiosAuth = useAxiosAuth();
   const navigate = useNavigate();
@@ -35,23 +36,32 @@ const HomeScreen = () => {
       });
   };
 
+  const handleMapDelete = (mapIndex: number) => {
+    setUserMaps((prevUserMaps) => prevUserMaps.splice(mapIndex, 1));
+  };
+
   return (
     <AuthGuard<IMap[]> apiPath={API_PATHS.GET_USER_MAPS}>
-      {(userMaps) => (
-        <div className="grow p-4">
-          <List
-            title="Your maps"
-            actionBtnProps={{
-              text: "Create a new map",
-              onClick: createMap,
-              loading: creatingMap,
-            }}
-            elements={formatUserMapsAsListElements(userMaps || [])}
-            emptyPlaceholderText="No maps created."
-            redirectUrlPrefix="edit"
-          />
-        </div>
-      )}
+      {(_userMaps) => {
+        setUserMaps(_userMaps);
+
+        return (
+          <div className="grow p-4">
+            <List
+              title="Your maps"
+              actionBtnProps={{
+                text: "Create a new map",
+                onClick: createMap,
+                loading: creatingMap,
+              }}
+              elements={formatUserMapsAsListElements(userMaps || [])}
+              emptyPlaceholderText="No maps created."
+              redirectUrlPrefix="edit"
+              onElementDelete={handleMapDelete}
+            />
+          </div>
+        );
+      }}
     </AuthGuard>
   );
 };

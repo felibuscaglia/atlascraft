@@ -11,8 +11,8 @@ export class MapsService {
   constructor(
     @InjectRepository(Map) private readonly mapsRepository: Repository<Map>,
     private readonly usersService: UsersService,
-    private readonly layersService: LayersService
-  ) { }
+    private readonly layersService: LayersService,
+  ) {}
 
   public findByUserId(userId: string) {
     return this.mapsRepository
@@ -37,8 +37,12 @@ export class MapsService {
 
     map.name = DEFAULT_MAP_NAME;
     map.users = [await this.usersService.findOne({ id: ownerId })];
-    map.layers = [await this.layersService.create()]
+    map.layers = [await this.layersService.create()];
 
     return this.mapsRepository.save(map);
+  }
+
+  public delete(mapId: string) {
+    return this.mapsRepository.delete({ id: mapId });
   }
 }

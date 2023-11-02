@@ -18,7 +18,7 @@ class Map {
   @Column({ nullable: false })
   name: string;
 
-  @ManyToMany(() => User, (user) => user.maps)
+  @ManyToMany(() => User, (user) => user.maps, { onDelete: 'CASCADE' })
   users: User[];
 
   @CreateDateColumn({ name: 'created_at' })

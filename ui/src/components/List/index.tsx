@@ -14,6 +14,7 @@ interface IListProps {
   elements: IListElement[];
   emptyPlaceholderText: string;
   redirectUrlPrefix: string;
+  onElementDelete: (elementIndex: number) => void;
 }
 
 const List: React.FC<IListProps> = ({
@@ -22,6 +23,7 @@ const List: React.FC<IListProps> = ({
   elements = [],
   emptyPlaceholderText,
   redirectUrlPrefix,
+  onElementDelete
 }) => {
   return (
     <div className="flex h-full flex-col gap-4">
@@ -50,6 +52,7 @@ const List: React.FC<IListProps> = ({
             {elements.map((element, i) => (
               <Element
                 redirectUrlPrefix={redirectUrlPrefix}
+                onDelete={() => onElementDelete(i)}
                 {...element}
                 key={`list-element-${title}-${i}`}
               />

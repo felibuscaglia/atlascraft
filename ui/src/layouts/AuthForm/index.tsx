@@ -48,7 +48,7 @@ const AuthFormLayout: React.FC<IAuthFormLayoutProps> = ({
             submitBtnText
           )}
         </button>
-        {isSignIn && <p className="text-center">Don't have an account? <Link className="font-titles font-bold hover:underline" to={`/${UI_PATHS.SIGN_UP}`}>Sign up for {APP_NAME}</Link></p>}
+        {isSignIn && <p className="text-center">Don't have an account? <Link className="font-titles font-bold hover:underline" to={UI_PATHS.SIGN_UP}>Sign up for {APP_NAME}</Link></p>}
       </form>
     </div>
   );

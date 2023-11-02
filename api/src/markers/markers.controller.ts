@@ -12,7 +12,7 @@ export class MarkersController {
   @Post()
   @UseGuards(MapAuthGuard)
   async saveMarker(@Body() saveMarkerDto: SaveMarkerDto) {
-    const { map, ...marker } = await this.markersService.save(saveMarkerDto);
+    const { layer, ...marker } = await this.markersService.save(saveMarkerDto);
     return marker;
   }
 }

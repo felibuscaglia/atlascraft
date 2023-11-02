@@ -1,9 +1,9 @@
-import { IMarker } from "./Marker.interface";
+import { ILayer } from "./Layer.interface";
 
 export interface IMap {
   id: string;
   name: string;
   createdAt: Date;
   updatedAt: Date;
-  markers: IMarker[];
+  layers: ILayer[];
 }

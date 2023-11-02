@@ -90,7 +90,6 @@ interface IMapComponentProps {
 }
 
 const MapComponent: React.FC<IMapComponentProps> = ({ map }) => {
-  const [markers, setMarkers] = useState<IMarker[]>(map.markers);
   const [error, setError] = useState<string | null>(null);
 
   const axiosAuth = useAxiosAuth();
@@ -107,10 +106,10 @@ const MapComponent: React.FC<IMapComponentProps> = ({ map }) => {
       mapId: map.id,
     };
 
-    axiosAuth
-      .post<IMarker>(API_PATHS.SAVE_MARKER, body)
-      .then(({ data }) => setMarkers((prevMarkers) => [...prevMarkers, data]))
-      .catch((err) => setError(err.response?.status === HttpStatusCode.Forbidden ? UNAUTHORIZED_MAP_ERROR_MSG : UNEXPECTED_ERROR_MSG));
+    // axiosAuth
+    //   .post<IMarker>(API_PATHS.SAVE_MARKER, body)
+    //   .then(({ data }) => setMarkers((prevMarkers) => [...prevMarkers, data]))
+    //   .catch((err) => setError(err.response?.status === HttpStatusCode.Forbidden ? UNAUTHORIZED_MAP_ERROR_MSG : UNEXPECTED_ERROR_MSG));
   };
 
   useEffect(() => {
@@ -118,11 +117,11 @@ const MapComponent: React.FC<IMapComponentProps> = ({ map }) => {
 
     const map = initializeMap(mapContainer, saveMarker);
 
-    markers.forEach(({ place, customDisplayName }) => {
-      new mapboxgl.Marker()
-        .setLngLat([place.latitude, place.longitude])
-        .addTo(map);
-    });
+    // markers.forEach(({ place, customDisplayName }) => {
+    //   new mapboxgl.Marker()
+    //     .setLngLat([place.latitude, place.longitude])
+    //     .addTo(map);
+    // });
   }, [map]);
 
   if (error) {
@@ -131,7 +130,7 @@ const MapComponent: React.FC<IMapComponentProps> = ({ map }) => {
 
   return (
     <div ref={mapContainer} className="map-container h-screen w-full">
-      <FeatureList mapName={map.name} />
+      <FeatureList mapName={map.name} layers={map.layers} />
     </div>
   );
 };

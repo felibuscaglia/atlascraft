@@ -8,7 +8,7 @@ import {
   OneToMany,
 } from 'typeorm';
 import User from './User.entity';
-import Marker from './Marker.entity';
+import Layer from './Layer.entity';
 
 @Entity('map')
 class Map {
@@ -27,8 +27,8 @@ class Map {
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 
-  @OneToMany(() => Marker, (marker) => marker.map)
-  markers: Marker[];
+  @OneToMany(() => Layer, (layer) => layer.map)
+  layers: Layer[];
 }
 
 export default Map;

@@ -1,13 +1,24 @@
 import { LogOut, Map, User } from "react-feather";
 import { Menu, Transition } from "@headlessui/react";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { PRIMARY_BRAND_COLOR } from "lib/constants/styles";
+import useAxiosAuth from "lib/hooks/useAxiosAuth";
+import { API_PATHS, UI_PATHS } from "lib/constants/paths";
+import { useNavigate } from 'react-router-dom';
 
 const btnClassnames =
-  "text-primary-brand-color hover:underline group flex w-full items-center gap-2  px-2 py-2 text-sm rounded-sm";
+  "text-primary-brand-color hover:underline group flex w-full items-center gap-2  px-2 py-2 text-sm rounded-sm cursor-loading";
 
 const UserActions = () => {
-  const signOut = () => {};
+  const axiosAuth = useAxiosAuth();
+  const navigate = useNavigate();
+
+  const signOut = () => {
+    axiosAuth.post(API_PATHS.SIGN_OUT)
+      .then(() => navigate(UI_PATHS.SIGN_IN))
+      .catch(err => console.error(err));
+  };
+
   return (
     <div>
       <Menu as="div" className="relative inline-block text-left">
@@ -39,7 +50,7 @@ const UserActions = () => {
             </div>
             <div className="px-1 py-1">
               <Menu.Item>
-                <button className={btnClassnames}>
+                <button onClick={signOut} className={btnClassnames}>
                   <LogOut size={12} />
                   <span>Sign Out</span>
                 </button>

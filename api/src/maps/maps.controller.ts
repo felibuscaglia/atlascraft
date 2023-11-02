@@ -1,7 +1,6 @@
 import {
   Controller,
   Get,
-  NotFoundException,
   Param,
   Post,
   UseGuards,
@@ -23,7 +22,7 @@ export class MapsController {
   @UseGuards(MapAuthGuard)
   @Get('/:mapId')
   async getMapById(@Param('mapId') mapId: string) {
-    return this.mapsService.findOne({ id: mapId }, ['markers', 'markers.place']);
+    return this.mapsService.findOne({ id: mapId }, ['layers', 'layers.markers', 'layers.markers.place']);
   }
 
   @Post()

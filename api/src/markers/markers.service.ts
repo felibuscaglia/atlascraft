@@ -1,24 +1,24 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { SaveMarkerDto } from './dto';
 import { PlacesService } from 'places/places.service';
-import { Map, Marker, Place } from 'entities';
+import { Layer, Marker, Place } from 'entities';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { MapsService } from 'maps/maps.service';
+import { LayersService } from 'layers/layers.service';
 
 @Injectable()
 export class MarkersService {
   constructor(
     private readonly placesService: PlacesService,
-    private readonly mapsService: MapsService,
+    private readonly layersService: LayersService,
     @InjectRepository(Marker)
     private readonly markersRepository: Repository<Marker>,
   ) { }
 
   public async save(saveMarkerDto: SaveMarkerDto) {
-    const map = await this.mapsService.findOne({ id: saveMarkerDto.mapId });
+    const layer = await this.layersService.findOne({ id: saveMarkerDto.layerId });
 
-    if (!map) {
+    if (!layer) {
       throw new InternalServerErrorException('Something unexpected happened.');
     }
 
@@ -31,14 +31,14 @@ export class MarkersService {
       place = await this.placesService.create(createPlaceDto);
     }
 
-    return this.create(place, map);
+    return this.create(place, layer);
   }
 
-  private create(place: Place, map: Map) {
+  private create(place: Place, layer: Layer) {
     const marker = new Marker();
 
     marker.place = place;
-    marker.map = map;
+    marker.layer = layer;
 
     return this.markersRepository.save(marker);
   }

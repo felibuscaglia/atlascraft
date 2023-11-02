@@ -24,4 +24,8 @@ export class SaveMarkerDto {
   @IsNotEmpty()
   @IsUUID()
   mapId: string;
+
+  @IsNotEmpty()
+  @IsUUID()
+  layerId: string;
 }

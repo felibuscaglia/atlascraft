@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 import Place from './Place.entity';
 import Map from './Map.entity';
+import Layer from './Layer.entity';
 
 @Entity('marker')
 class Marker {
@@ -21,8 +22,8 @@ class Marker {
   @JoinColumn()
   place: Place;
 
-  @ManyToOne(() => Map, (map) => map.markers)
-  map: Map;
+  @ManyToOne(() => Layer, (layer) => layer.markers)
+  layer: Layer;
 }
 
 export default Marker;

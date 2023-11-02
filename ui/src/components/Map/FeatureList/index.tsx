@@ -11,7 +11,7 @@ interface IMapFeatureList {
 
 const MapFeatureList: React.FC<IMapFeatureList> = ({ mapName, layers }) => {
   return (
-    <div className="fixed left-3 top-20 z-50 w-[21.7%] rounded-sm bg-white">
+    <div className="fixed left-3 top-20 z-50 w-[21.7%] rounded-sm bg-secondary-brand-color">
       <div className="p-4">
         <section className="flex items-center justify-between">
           <h1 className="mb-1 text-xl font-semibold">{mapName}</h1>
@@ -24,7 +24,7 @@ const MapFeatureList: React.FC<IMapFeatureList> = ({ mapName, layers }) => {
       </div>
       <Actions />
       <div>
-        {layers.map(() => <Layer />)}
+        {layers.map((layer) => <Layer {...layer} key={`layer-${layer.id}`} />)}
       </div>
     </div>
   );

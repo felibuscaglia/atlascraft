@@ -2,7 +2,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import mapboxgl, { LngLatLike } from "mapbox-gl";
 import { useEffect, useRef, useState } from "react";
 import FeatureList from "./FeatureList";
-import { IMap, IMarker } from "lib/interfaces/entities";
+import { ILayer, IMap, IMarker } from "lib/interfaces/entities";
 import ReactDOMServer from "react-dom/server";
 import { Search } from "react-feather";
 import { SECONDARY_BRAND_COLOR } from "lib/constants/styles";
@@ -10,7 +10,10 @@ import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
 import useAxiosAuth from "lib/hooks/useAxiosAuth";
 import { API_PATHS } from "lib/constants/paths";
-import { UNAUTHORIZED_MAP_ERROR_MSG, UNEXPECTED_ERROR_MSG } from "lib/constants/error-messages";
+import {
+  UNAUTHORIZED_MAP_ERROR_MSG,
+  UNEXPECTED_ERROR_MSG,
+} from "lib/constants/error-messages";
 import { HttpStatusCode } from "axios";
 import ErrorScreen from "screens/Error";
 
@@ -91,25 +94,49 @@ interface IMapComponentProps {
 
 const MapComponent: React.FC<IMapComponentProps> = ({ map }) => {
   const [error, setError] = useState<string | null>(null);
+  const [layers, setLayers] = useState<ILayer[]>(map.layers);
+  const [selectedLayer, setSelectedLayer] = useState(0);
 
   const axiosAuth = useAxiosAuth();
 
   const mapContainer = useRef<HTMLDivElement | null>(null);
 
   const saveMarker = (result: MapboxGeocoder.Result) => {
-    const body = {
-      latitude: result.center[0],
-      longitude: result.center[1],
-      displayName: result.text,
-      name: result.place_name,
-      externalId: result.id,
+    const layerIndex = selectedLayer;
+
+    const { center, text, place_name, id } = result;
+
+    const newMarker = {
+      latitude: center[0],
+      longitude: center[1],
+      displayName: text,
+      name: place_name,
+      externalId: id,
       mapId: map.id,
+      layerId: layers[layerIndex].id,
     };
 
-    // axiosAuth
-    //   .post<IMarker>(API_PATHS.SAVE_MARKER, body)
-    //   .then(({ data }) => setMarkers((prevMarkers) => [...prevMarkers, data]))
-    //   .catch((err) => setError(err.response?.status === HttpStatusCode.Forbidden ? UNAUTHORIZED_MAP_ERROR_MSG : UNEXPECTED_ERROR_MSG));
+    axiosAuth
+      .post<IMarker>(API_PATHS.SAVE_MARKER, newMarker)
+      .then(({ data }) => {
+        setLayers((prevLayers) => {
+          const updatedLayers = [...prevLayers];
+
+          updatedLayers[layerIndex].markers = [
+            ...updatedLayers[layerIndex].markers,
+            data,
+          ];
+
+          return updatedLayers;
+        });
+      })
+      .catch((err) =>
+        setError(
+          err.response?.status === HttpStatusCode.Forbidden
+            ? UNAUTHORIZED_MAP_ERROR_MSG
+            : UNEXPECTED_ERROR_MSG,
+        ),
+      );
   };
 
   useEffect(() => {
@@ -125,12 +152,12 @@ const MapComponent: React.FC<IMapComponentProps> = ({ map }) => {
   }, [map]);
 
   if (error) {
-    return <ErrorScreen msg={error} />
+    return <ErrorScreen msg={error} />;
   }
 
   return (
     <div ref={mapContainer} className="map-container h-screen w-full">
-      <FeatureList mapName={map.name} layers={map.layers} />
+      <FeatureList mapName={map.name} layers={layers} />
     </div>
   );
 };

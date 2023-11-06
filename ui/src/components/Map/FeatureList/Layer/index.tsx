@@ -11,14 +11,14 @@ const MapFeatureListLayer: React.FC<ILayer> = ({ name, markers }) => {
           <Eye size={14} />
         </button>
       </section>
-      <section className="divide-y divide-y-primary-brand-color">
+      {markers.length ? <section className="divide-y divide-y-primary-brand-color">
         {markers.map((marker) => (
           <Marker
             {...marker}
             key={`map-feature-list-layer-marker-${marker.id}`}
           />
         ))}
-      </section>
+      </section> : <p className="text-center py-4">No markers available.</p>}
     </div>
   );
 };

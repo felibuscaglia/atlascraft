@@ -23,6 +23,21 @@ const DEFAULT_ZOOM_LEVEL = 1;
 const DEFAULT_LNG = -70.9;
 const DEFAULT_LAT = 42.35;
 
+const generatePopup = (displayName: string, name: string, buttonText = '+ Add to map') => {
+  const popupContent = document.createElement("div");
+  popupContent.innerHTML = `
+    <div>
+      <section>
+        <h1>${displayName}</h1>
+        <p>${name}</p>
+      </section>
+      <button class='add-btn'>${buttonText}</button>
+    </div>
+  `;
+
+  return popupContent;
+}
+
 const initializeMap = (
   mapContainerRef: React.RefObject<HTMLDivElement>,
   saveMarker: (result: MapboxGeocoder.Result) => void,
@@ -56,16 +71,7 @@ const initializeMap = (
   geocoder.on("result", (event: { result: MapboxGeocoder.Result }) => {
     const { center, place_name, text } = event.result;
 
-    const popupContent = document.createElement("div");
-    popupContent.innerHTML = `
-    <div>
-      <section>
-        <h1>${text}</h1>
-        <p>${place_name}</p>
-      </section>
-      <button class='add-btn'>+ Add to map</button>
-    </div>
-  `;
+    const popupContent = generatePopup(text, place_name);
 
     const addButton = popupContent.querySelector(".add-btn");
 
@@ -144,11 +150,14 @@ const MapComponent: React.FC<IMapComponentProps> = ({ map }) => {
 
     const map = initializeMap(mapContainer, saveMarker);
 
-    // markers.forEach(({ place, customDisplayName }) => {
-    //   new mapboxgl.Marker()
-    //     .setLngLat([place.latitude, place.longitude])
-    //     .addTo(map);
-    // });
+    layers.forEach(({ markers }) => {
+      markers.forEach(({ place, customDisplayName }) => {
+        new mapboxgl.Marker()
+          .setLngLat([place.latitude, place.longitude])
+          .setPopup(new mapboxgl.Popup().setDOMContent(generatePopup(customDisplayName ?? place.displayName, place.name, 'Edit')))
+          .addTo(map);
+      })
+    })
   }, [map]);
 
   if (error) {

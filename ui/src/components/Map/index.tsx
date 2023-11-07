@@ -16,6 +16,7 @@ import {
 } from "lib/constants/error-messages";
 import { HttpStatusCode } from "axios";
 import ErrorScreen from "screens/Error";
+import MarkerDetailSidebar from "./MarkerDetailSidebar";
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN || "";
 
@@ -23,7 +24,11 @@ const DEFAULT_ZOOM_LEVEL = 1;
 const DEFAULT_LNG = -70.9;
 const DEFAULT_LAT = 42.35;
 
-const generatePopup = (displayName: string, name: string, buttonText = '+ Add to map') => {
+const generatePopup = (
+  displayName: string,
+  name: string,
+  buttonText = "+ Add to map",
+) => {
   const popupContent = document.createElement("div");
   popupContent.innerHTML = `
     <div>
@@ -36,7 +41,7 @@ const generatePopup = (displayName: string, name: string, buttonText = '+ Add to
   `;
 
   return popupContent;
-}
+};
 
 const initializeMap = (
   mapContainerRef: React.RefObject<HTMLDivElement>,
@@ -154,10 +159,18 @@ const MapComponent: React.FC<IMapComponentProps> = ({ map }) => {
       markers.forEach(({ place, customDisplayName }) => {
         new mapboxgl.Marker()
           .setLngLat([place.latitude, place.longitude])
-          .setPopup(new mapboxgl.Popup().setDOMContent(generatePopup(customDisplayName ?? place.displayName, place.name, 'Edit')))
+          .setPopup(
+            new mapboxgl.Popup().setDOMContent(
+              generatePopup(
+                customDisplayName ?? place.displayName,
+                place.name,
+                "Edit",
+              ),
+            ),
+          )
           .addTo(map);
-      })
-    })
+      });
+    });
   }, [map]);
 
   if (error) {
@@ -165,8 +178,9 @@ const MapComponent: React.FC<IMapComponentProps> = ({ map }) => {
   }
 
   return (
-    <div ref={mapContainer} className="map-container h-screen w-full">
+    <div ref={mapContainer} className="map-container flex w-full grow">
       <FeatureList mapName={map.name} layers={layers} />
+      <MarkerDetailSidebar />
     </div>
   );
 };

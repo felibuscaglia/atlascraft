@@ -33,12 +33,14 @@ span,
 p,
 label,
 input,
-button {
+button,
+textarea {
   font-family: var(--font-family-text) !important;
 }
 
 input,
-button {
+button,
+textarea {
   outline: none;
 }
 
@@ -107,7 +109,7 @@ li {
 .mapboxgl-popup-content p {
   font-size: 0.9rem;
   margin-bottom: 1rem;
-  margin-top: .1rem;
+  margin-top: 0.1rem;
 }
 
 .mapboxgl-popup-content .add-btn {

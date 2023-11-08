@@ -17,6 +17,7 @@ import {
 import { HttpStatusCode } from "axios";
 import ErrorScreen from "screens/Error";
 import MarkerDetailSidebar from "./MarkerDetailSidebar";
+import { MapContext } from "lib/contexts";
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN || "";
 
@@ -107,6 +108,7 @@ const MapComponent: React.FC<IMapComponentProps> = ({ map }) => {
   const [error, setError] = useState<string | null>(null);
   const [layers, setLayers] = useState<ILayer[]>(map.layers);
   const [selectedLayer, setSelectedLayer] = useState(0);
+  const [selectedMarker, setSelectedMarker] = useState<IMarker | null>(null);
 
   const axiosAuth = useAxiosAuth();
 
@@ -178,10 +180,21 @@ const MapComponent: React.FC<IMapComponentProps> = ({ map }) => {
   }
 
   return (
-    <div ref={mapContainer} className="map-container flex w-full grow">
-      <FeatureList mapName={map.name} layers={layers} />
-      <MarkerDetailSidebar />
-    </div>
+    <MapContext.Provider
+      value={{
+        openMarkerDetailSidebar: (marker: IMarker) => setSelectedMarker(marker),
+      }}
+    >
+      <div ref={mapContainer} className="map-container flex w-full grow">
+        <FeatureList map={map} layers={layers} />
+        {selectedMarker && (
+          <MarkerDetailSidebar
+            marker={selectedMarker}
+            onClose={() => setSelectedMarker(null)}
+          />
+        )}
+      </div>
+    </MapContext.Provider>
   );
 };
 

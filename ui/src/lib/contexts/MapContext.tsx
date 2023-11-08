@@ -5,6 +5,6 @@ interface IMapContext {
   openMarkerDetailSidebar: (marker: IMarker) => void;
 }
 
-export const mapContext = createContext<IMapContext>({
+export const MapContext = createContext<IMapContext>({
   openMarkerDetailSidebar: () => {},
 });

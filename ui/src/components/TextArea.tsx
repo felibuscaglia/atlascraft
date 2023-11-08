@@ -1,20 +1,13 @@
 import { IInputComponentProps } from "lib/interfaces/props";
 
-interface IInputProps extends IInputComponentProps<HTMLInputElement> {
-  size?: "small" | "base";
-  type?: React.HTMLInputTypeAttribute;
-}
-
-const Input: React.FC<IInputProps> = ({
+const TextArea: React.FC<IInputComponentProps<HTMLTextAreaElement>> = ({
   id,
   label,
   placeholder,
-  type = "text",
   value,
   onChange,
   error,
   required = true,
-  size = "base",
 }) => {
   return (
     <div className="w-full">
@@ -22,13 +15,12 @@ const Input: React.FC<IInputProps> = ({
         <span>{label}</span>
         {error && <span className="ml-1 text-error">— {error}</span>}
       </label>
-      <input
-        className={`w-full rounded border ${
+      <textarea
+        className={`w-full rounded border h-40 ${
           error ? "border-error" : "border-gray-300"
-        } ${size === "base" ? "p-2" : "p-1"}`}
+        } p-1`}
         id={id}
         placeholder={placeholder}
-        type={type}
         value={value}
         onChange={onChange}
         required={required}
@@ -37,4 +29,4 @@ const Input: React.FC<IInputProps> = ({
   );
 };
 
-export default Input;
+export default TextArea;

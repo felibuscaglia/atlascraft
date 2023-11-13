@@ -1,7 +1,7 @@
-import ErrorBanner from "./Banners/Error";
+import ErrorBanner from "components/Banners/Error";
 import { ClipLoader } from "react-spinners";
-import InfoBanner from "./Banners/Info";
-import { Link } from 'react-router-dom';
+import InfoBanner from "components/Banners/Info";
+import { Link } from "react-router-dom";
 import { UI_PATHS } from "lib/constants/paths";
 import { APP_NAME } from "lib/constants/app-data";
 
@@ -24,7 +24,7 @@ const AuthFormLayout: React.FC<IAuthFormLayoutProps> = ({
   error,
   infoMsg,
   loading = false,
-  isSignIn = false
+  isSignIn = false,
 }) => {
   return (
     <div className="flex h-screen w-screen flex-col items-center justify-center gap-4">
@@ -48,7 +48,17 @@ const AuthFormLayout: React.FC<IAuthFormLayoutProps> = ({
             submitBtnText
           )}
         </button>
-        {isSignIn && <p className="text-center">Don't have an account? <Link className="font-titles font-bold hover:underline" to={UI_PATHS.SIGN_UP}>Sign up for {APP_NAME}</Link></p>}
+        {isSignIn && (
+          <p className="text-center">
+            Don't have an account?{" "}
+            <Link
+              className="font-titles font-bold hover:underline"
+              to={UI_PATHS.SIGN_UP}
+            >
+              Sign up for {APP_NAME}
+            </Link>
+          </p>
+        )}
       </form>
     </div>
   );

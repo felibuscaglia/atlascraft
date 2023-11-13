@@ -6,7 +6,10 @@ import ErrorScreen from "screens/Error";
 import LoadingScreen from "screens/Loading";
 
 interface IAuthGuardProps<T> {
-  children: (data: T) => React.ReactNode;
+  children: (
+    data: T,
+    updateData: React.Dispatch<React.SetStateAction<T | null>>,
+  ) => React.ReactNode;
   apiPath: string;
   displayPageHead?: boolean;
 }
@@ -55,7 +58,7 @@ const AuthGuard = <T,>({
   return (
     <>
       {displayPageHead && <PageHead />}
-      {children(apiData)}
+      {children(apiData, setApiData)}
     </>
   );
 };

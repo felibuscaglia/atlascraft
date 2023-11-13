@@ -6,11 +6,14 @@ import {
   Param,
   Post,
   UseGuards,
+  Patch,
+  Body,
 } from '@nestjs/common';
 import { CurrentUser } from 'auth/decorators';
 import { JwtGuard } from 'auth/guards';
 import { MapsService } from './maps.service';
 import { MapAuthGuard } from './guards';
+import { UpdateMapDto } from './dto';
 
 @Controller('maps')
 @UseGuards(JwtGuard)
@@ -41,5 +44,13 @@ export class MapsController {
     await this.mapsService.delete(mapId);
 
     return HttpStatus.OK;
+  }
+
+  @Patch('/:mapId')
+  async updateMap(
+    @Param('mapId') mapId: string,
+    @Body() updateMapDto: UpdateMapDto,
+  ) {
+    return this.mapsService.update(mapId, updateMapDto);
   }
 }

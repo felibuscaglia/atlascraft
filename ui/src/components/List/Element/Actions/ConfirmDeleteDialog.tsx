@@ -1,20 +1,17 @@
-import { Dialog, Transition } from "@headlessui/react";
 import DialogLayout from "layouts/Dialog";
 import { API_PATHS } from "lib/constants/paths";
-import { PRIMARY_BRAND_COLOR } from "lib/constants/styles";
 import useAxiosAuth from "lib/hooks/useAxiosAuth";
-import { Fragment, useState } from "react";
-import { ClipLoader } from "react-spinners";
+import { useState } from "react";
 
-interface IListElementActionsConfirmDeleteModalProps {
+interface IListElementActionsConfirmDeleteDialogProps {
   display: boolean;
   onClose: () => void;
   mapId: string;
   onDeleteConfirm: () => void;
 }
 
-const ListElementActionsConfirmDeleteModal: React.FC<
-  IListElementActionsConfirmDeleteModalProps
+const ListElementActionsConfirmDeleteDialog: React.FC<
+IListElementActionsConfirmDeleteDialogProps
 > = ({ display, onClose, mapId, onDeleteConfirm }) => {
   const [deleting, setDeleting] = useState(false);
 
@@ -40,6 +37,8 @@ const ListElementActionsConfirmDeleteModal: React.FC<
       onDialogClose={onClose}
       onButtonClick={deleteMap}
       title="Are you sure you want to delete this map?"
+      btnText="I'm sure. Delete."
+      color="danger"
     >
       <div className="mt-2">
         <p className="text-sm opacity-70">
@@ -52,4 +51,4 @@ const ListElementActionsConfirmDeleteModal: React.FC<
   );
 };
 
-export default ListElementActionsConfirmDeleteModal;
+export default ListElementActionsConfirmDeleteDialog;

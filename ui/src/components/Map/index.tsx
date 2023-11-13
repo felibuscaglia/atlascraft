@@ -102,9 +102,10 @@ const initializeMap = (
 
 interface IMapComponentProps {
   map: IMap;
+  setMap: React.Dispatch<React.SetStateAction<IMap | null>>;
 }
 
-const MapComponent: React.FC<IMapComponentProps> = ({ map }) => {
+const MapComponent: React.FC<IMapComponentProps> = ({ map, setMap }) => {
   const [error, setError] = useState<string | null>(null);
   const [layers, setLayers] = useState<ILayer[]>(map.layers);
   const [selectedLayer, setSelectedLayer] = useState(0);
@@ -183,6 +184,7 @@ const MapComponent: React.FC<IMapComponentProps> = ({ map }) => {
     <MapContext.Provider
       value={{
         openMarkerDetailSidebar: (marker: IMarker) => setSelectedMarker(marker),
+        setMap,
       }}
     >
       <div ref={mapContainer} className="map-container flex w-full grow">

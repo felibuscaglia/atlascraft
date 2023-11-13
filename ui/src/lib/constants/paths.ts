@@ -15,5 +15,6 @@ export const API_PATHS = {
   EDIT_MAP: "/edit",
   GET_MAP: "/maps/:mapId",
   DELETE_MAP: "/maps/:mapId",
+  UPDATE_MAP: "/maps/:mapId",
   SAVE_MARKER: "/markers",
 };

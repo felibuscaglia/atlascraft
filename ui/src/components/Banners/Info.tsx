@@ -2,7 +2,7 @@ interface IAuthFormInfoBannerProps {
   infoMsg: string;
 }
 
-const AuthFormInfoBanner: React.FC<IAuthFormInfoBannerProps> = ({
+const InfoBanner: React.FC<IAuthFormInfoBannerProps> = ({
   infoMsg,
 }) => {
   return (
@@ -12,4 +12,4 @@ const AuthFormInfoBanner: React.FC<IAuthFormInfoBannerProps> = ({
   );
 };
 
-export default AuthFormInfoBanner;
+export default InfoBanner;

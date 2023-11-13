@@ -5,7 +5,7 @@ import {
 } from "lib/constants/styles";
 import { Fragment, useState } from "react";
 import { MoreHorizontal, Trash } from "react-feather";
-import ConfirmDeleteModal from "./ConfirmDeleteModal";
+import ConfirmDeleteDialog from "./ConfirmDeleteDialog";
 
 interface IListElementActions {
   mapId: string;
@@ -49,7 +49,7 @@ const ListElementActions: React.FC<IListElementActions> = ({ mapId, onDelete }) 
           </Menu.Items>
         </Transition>
       </Menu>
-      <ConfirmDeleteModal
+      <ConfirmDeleteDialog
         display={displayConfirmDeleteModal}
         onClose={() => setDisplayConfirmDeleteModal(false)}
         mapId={mapId}

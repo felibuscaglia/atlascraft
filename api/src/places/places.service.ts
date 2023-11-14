@@ -15,7 +15,7 @@ export class PlacesService {
     });
   }
 
-  public create(createPlaceDto: Omit<Place, 'id'>) {
+  public create(createPlaceDto: Omit<Place, 'id' | 'markers'>) {
     const newPlace = new Place();
 
     newPlace.displayName = createPlaceDto.displayName;
@@ -23,6 +23,7 @@ export class PlacesService {
     newPlace.latitude = createPlaceDto.latitude;
     newPlace.longitude = createPlaceDto.longitude;
     newPlace.name = createPlaceDto.name;
+    newPlace.type = createPlaceDto.type;
 
     return this.placesRepository.save(newPlace);
   }

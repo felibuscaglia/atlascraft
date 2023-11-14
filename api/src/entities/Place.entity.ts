@@ -1,4 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { PLACE_TYPE } from 'places/lib/enums';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import Marker from './Marker.entity';
 
 @Entity('place')
 class Place {
@@ -19,6 +21,12 @@ class Place {
 
   @Column({ nullable: false, type: 'float' })
   longitude: number;
+
+  @Column({ nullable: true, type: 'enum', enum: PLACE_TYPE })
+  type: PLACE_TYPE;
+
+  @OneToMany(() => Marker, (marker) => marker.place, { cascade: true })
+  markers: Marker[];
 }
 
 export default Place;

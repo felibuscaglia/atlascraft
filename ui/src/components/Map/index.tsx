@@ -4,8 +4,11 @@ import { useEffect, useRef, useState } from "react";
 import FeatureList from "./FeatureList";
 import { ILayer, IMap, IMarker } from "lib/interfaces/entities";
 import ReactDOMServer from "react-dom/server";
-import { Search } from "react-feather";
-import { SECONDARY_BRAND_COLOR } from "lib/constants/styles";
+import { MapPin, Search } from "react-feather";
+import {
+  PRIMARY_BRAND_COLOR,
+  SECONDARY_BRAND_COLOR,
+} from "lib/constants/styles";
 import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
 import useAxiosAuth from "lib/hooks/useAxiosAuth";
@@ -118,7 +121,7 @@ const MapComponent: React.FC<IMapComponentProps> = ({ map, setMap }) => {
   const saveMarker = (result: MapboxGeocoder.Result) => {
     const layerIndex = selectedLayer;
 
-    const { center, text, place_name, id } = result;
+    const { center, text, place_name, id, place_type } = result;
 
     const newMarker = {
       latitude: center[0],
@@ -128,6 +131,7 @@ const MapComponent: React.FC<IMapComponentProps> = ({ map, setMap }) => {
       externalId: id,
       mapId: map.id,
       layerId: layers[layerIndex].id,
+      type: place_type[0],
     };
 
     axiosAuth
@@ -160,7 +164,16 @@ const MapComponent: React.FC<IMapComponentProps> = ({ map, setMap }) => {
 
     layers.forEach(({ markers }) => {
       markers.forEach(({ place, customDisplayName }) => {
-        new mapboxgl.Marker()
+        const customMarker = document.createElement("div");
+        customMarker.innerHTML = ReactDOMServer.renderToString(
+          <MapPin
+            size={35}
+            fill={PRIMARY_BRAND_COLOR}
+            color={SECONDARY_BRAND_COLOR}
+          />,
+        );
+
+        new mapboxgl.Marker(customMarker)
           .setLngLat([place.latitude, place.longitude])
           .setPopup(
             new mapboxgl.Popup().setDOMContent(

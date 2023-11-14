@@ -7,7 +7,6 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import Place from './Place.entity';
-import Map from './Map.entity';
 import Layer from './Layer.entity';
 
 @Entity('marker')
@@ -18,7 +17,10 @@ class Marker {
   @Column({ nullable: true })
   customDisplayName?: string;
 
-  @OneToOne(() => Place)
+  @Column({ nullable: true })
+  color?: string;
+
+  @OneToOne(() => Place, { onDelete: 'CASCADE' })
   @JoinColumn()
   place: Place;
 

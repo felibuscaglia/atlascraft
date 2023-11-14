@@ -10,19 +10,26 @@ interface IMapFeatureList {
   layers: ILayer[];
 }
 
+const textClassnames = "text-sm opacity-70";
+
 const MapFeatureList: React.FC<IMapFeatureList> = ({ map, layers }) => {
   const [displayDialog, setDisplayDialog] = useState(false);
-  
+
   return (
     <>
       <div className="fixed left-3 top-20 z-40 w-[21.7%] rounded-sm bg-secondary-brand-color">
         <div className="py-4 pl-4 pr-1">
           <section className="flex items-center justify-between">
-            <h1 className="mb-1 text-xl font-semibold">{map.name}</h1>
+            <h1
+              onClick={() => setDisplayDialog(true)}
+              className="mb-1 cursor-pointer text-xl font-semibold"
+            >
+              {map.name}
+            </h1>
             <Options displayDialog={() => setDisplayDialog(true)} />
           </section>
-          <p className="text-sm opacity-70">2 views</p>
-          <p className="text-sm opacity-70">Last change was made 2 hours ago</p>
+          <p className={textClassnames}>2 views</p>
+          <p className={textClassnames}>Last change was made 2 hours ago</p>
         </div>
         <Actions />
         <div>

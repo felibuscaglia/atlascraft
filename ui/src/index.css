@@ -40,7 +40,8 @@ textarea {
 
 input,
 button,
-textarea {
+textarea,
+p {
   outline: none;
 }
 

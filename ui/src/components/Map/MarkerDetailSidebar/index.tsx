@@ -1,9 +1,9 @@
 import { PRIMARY_BRAND_COLOR } from "lib/constants/styles";
 import { IMarker } from "lib/interfaces/entities";
 import { X } from "react-feather";
-import ColorPicker from "./ColorPicker";
 import { PLACE_TYPE } from "lib/enum";
-import MarkerCreator from "./MarkerCreator";
+import Notepad from "./Notepad";
+import PlacesList from "./PlacesList";
 
 interface IMapMarkerDetailSidebarProps {
   marker: IMarker;
@@ -15,6 +15,9 @@ const MapMarkerDetailSidebar: React.FC<IMapMarkerDetailSidebarProps> = ({
   onClose,
 }) => {
   const { place } = marker;
+
+  const isCountry = place.type === PLACE_TYPE.COUNTRY;
+
   return (
     <div className="fixed right-0 z-50 flex h-full w-[26%] flex-col items-center gap-4 bg-secondary-brand-color p-4">
       <button onClick={onClose} className="self-end pr-2">
@@ -32,16 +35,19 @@ const MapMarkerDetailSidebar: React.FC<IMapMarkerDetailSidebarProps> = ({
             {marker.customDisplayName || place.displayName}
           </h2>
         </section>
-        <p className="text-center text-lg opacity-70">
-          <span className="mr-1">{place.name} |</span>
-          <span className="capitalize-first inline-block font-bold">
+        {!isCountry && (
+          <span className="text-center text-lg opacity-70">{place.name}</span>
+        )}
+        <div className="flex items-center justify-center">
+          <span className="capitalize-first inline-block text-center text-lg font-bold opacity-70">
             {place.type === PLACE_TYPE.POINT_OF_INTEREST
               ? "point of interest"
               : place.type}
           </span>
-        </p>
+        </div>
       </div>
-      <MarkerCreator />
+      <Notepad />
+      <PlacesList />
     </div>
   );
 };

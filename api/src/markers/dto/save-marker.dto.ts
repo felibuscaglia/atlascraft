@@ -2,8 +2,6 @@ import {
   IsDefined,
   IsNotEmpty,
   IsString,
-  IsLatitude,
-  IsLongitude,
   IsUUID,
   IsEnum,
 } from 'class-validator';
@@ -11,11 +9,9 @@ import { PLACE_TYPE } from 'places/lib/enums';
 
 export class SaveMarkerDto {
   @IsDefined()
-  @IsLatitude()
   latitude: number;
 
   @IsDefined()
-  @IsLongitude()
   longitude: number;
 
   @IsNotEmpty()

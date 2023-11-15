@@ -75,6 +75,7 @@ const initializeMap = (
     accessToken: mapboxgl.accessToken,
     mapboxgl: mapboxgl,
     placeholder: "Search for places around the world",
+    language: "en",
   });
 
   geocoder.on("result", (event: { result: MapboxGeocoder.Result }) => {

@@ -5,7 +5,7 @@ const MarkerDetailSidebarNotepad = () => {
   const [notes, setNotes] = useState("");
 
   return (
-    <Disclosure>
+    <Disclosure buttonText="Notes">
       <textarea
         value={notes}
         onChange={({ target }) => setNotes(target.value)}

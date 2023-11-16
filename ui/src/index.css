@@ -136,3 +136,7 @@ li {
 .mapboxgl-popup-tip {
   border-top-color: var(--secondary-brand-color) !important;
 }
+
+.mapboxgl-marker:nth-child(3) {
+  display: none;
+}

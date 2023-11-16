@@ -7,11 +7,12 @@ const iconProps: IconProps = {
 
 interface IMarkerDetailsSidebarDisclosureProps {
   children: React.ReactNode;
+  buttonText: string;
 }
 
 const MarkerDetailsSidebarDisclosure: React.FC<
   IMarkerDetailsSidebarDisclosureProps
-> = ({ children }) => {
+> = ({ children, buttonText }) => {
   return (
     <Disclosure>
       <Disclosure.Button className="w-full">
@@ -22,7 +23,7 @@ const MarkerDetailsSidebarDisclosure: React.FC<
             ) : (
               <ChevronRight {...iconProps} className="w-1/12" />
             )}
-            <h3 className="text-2xl font-bold">Notes</h3>
+            <h3 className="text-2xl font-bold">{buttonText}</h3>
           </div>
         )}
       </Disclosure.Button>

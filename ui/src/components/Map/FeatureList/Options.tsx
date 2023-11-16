@@ -7,10 +7,14 @@ import {
 import { MoreVertical, Plus, Settings } from "react-feather";
 
 interface IMapFeatureListProps {
-    displayDialog: () => void;
+  displayEditMapDetailsDialog: () => void;
+  displayInviteCollaboratorDialog: () => void;
 }
 
-const MapFeatureListOptions: React.FC<IMapFeatureListProps> = ({ displayDialog }) => {
+const MapFeatureListOptions: React.FC<IMapFeatureListProps> = ({
+  displayEditMapDetailsDialog,
+  displayInviteCollaboratorDialog,
+}) => {
   return (
     <Menu as="div" className="relative inline-block text-left">
       <Menu.Button>
@@ -31,7 +35,10 @@ const MapFeatureListOptions: React.FC<IMapFeatureListProps> = ({ displayDialog }
         >
           <div className="px-1 py-px">
             <Menu.Item>
-              <button className={MENU_BUTTON_CLASSNAMES} onClick={displayDialog}>
+              <button
+                className={MENU_BUTTON_CLASSNAMES}
+                onClick={displayEditMapDetailsDialog}
+              >
                 <Settings size={16} />
                 <span>Edit map details</span>
               </button>
@@ -39,7 +46,10 @@ const MapFeatureListOptions: React.FC<IMapFeatureListProps> = ({ displayDialog }
           </div>
           <div className="px-1 py-px">
             <Menu.Item>
-              <button className={MENU_BUTTON_CLASSNAMES}>
+              <button
+                className={MENU_BUTTON_CLASSNAMES}
+                onClick={displayInviteCollaboratorDialog}
+              >
                 <Plus size={16} />
                 <span>Invite collaborator</span>
               </button>

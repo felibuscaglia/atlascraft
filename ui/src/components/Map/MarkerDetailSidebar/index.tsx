@@ -47,7 +47,7 @@ const MapMarkerDetailSidebar: React.FC<IMapMarkerDetailSidebarProps> = ({
         </div>
       </div>
       <Notepad />
-      <PlacesList />
+      <PlacesList buttonText="Regions" type={PLACE_TYPE.REGION} />
     </div>
   );
 };

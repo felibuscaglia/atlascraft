@@ -71,6 +71,15 @@ const initializeMap = (
   );
   searchBtn.innerHTML = searchIconHTML;
 
+  const customMarker = document.createElement("div");
+  customMarker.innerHTML = ReactDOMServer.renderToString(
+    <MapPin
+      size={35}
+      fill={PRIMARY_BRAND_COLOR}
+      color={SECONDARY_BRAND_COLOR}
+    />,
+  );
+
   const geocoder = new MapboxGeocoder({
     accessToken: mapboxgl.accessToken,
     mapboxgl: mapboxgl,
@@ -89,10 +98,20 @@ const initializeMap = (
       addButton.addEventListener("click", () => saveMarker(event.result));
     }
 
-    new mapboxgl.Popup({ closeOnClick: true })
+    const customMarker = document.createElement("div");
+    customMarker.innerHTML = ReactDOMServer.renderToString(
+      <MapPin
+        size={35}
+        fill={PRIMARY_BRAND_COLOR}
+        color={SECONDARY_BRAND_COLOR}
+      />,
+    );
+
+    new mapboxgl.Marker(customMarker)
       .setLngLat(center as LngLatLike)
-      .setDOMContent(popupContent)
-      .addTo(map);
+      .setPopup(new mapboxgl.Popup().setDOMContent(popupContent))
+      .addTo(map)
+      .togglePopup();
   });
 
   map.on("load", () => {

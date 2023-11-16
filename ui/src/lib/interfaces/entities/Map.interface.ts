@@ -1,4 +1,5 @@
 import { ILayer } from "./Layer.interface";
+import { IUser } from "./User.interface";
 
 export interface IMap {
   id: string;
@@ -7,4 +8,5 @@ export interface IMap {
   createdAt: Date;
   updatedAt: Date;
   layers: ILayer[];
+  users: IUser[];
 }

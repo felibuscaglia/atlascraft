@@ -4,6 +4,7 @@ import Layer from "./Layer";
 import Options from "./Options";
 import EditMapDetailsDialog from "./EditMapDetailsDialog";
 import { useState } from "react";
+import InviteCollaboratorDialog from "./InviteCollaboratorDialog";
 
 interface IMapFeatureList {
   map: IMap;
@@ -13,7 +14,17 @@ interface IMapFeatureList {
 const textClassnames = "text-sm opacity-70";
 
 const MapFeatureList: React.FC<IMapFeatureList> = ({ map, layers }) => {
-  const [displayDialog, setDisplayDialog] = useState(false);
+  const [displayDialog, setDisplayDialog] = useState({
+    mapDetails: false,
+    inviteCollaborator: false,
+  });
+
+  const toggleDialog = (type: "details" | "invite", open = true) => {
+    setDisplayDialog({
+      ...displayDialog,
+      [type === "details" ? "mapDetails" : "inviteCollaborator"]: open,
+    });
+  };
 
   return (
     <>
@@ -21,12 +32,15 @@ const MapFeatureList: React.FC<IMapFeatureList> = ({ map, layers }) => {
         <div className="py-4 pl-4 pr-1">
           <section className="flex items-center justify-between">
             <h1
-              onClick={() => setDisplayDialog(true)}
+              onClick={() => toggleDialog("details")}
               className="mb-1 cursor-pointer text-xl font-semibold"
             >
               {map.name}
             </h1>
-            <Options displayDialog={() => setDisplayDialog(true)} />
+            <Options
+              displayEditMapDetailsDialog={() => toggleDialog("details")}
+              displayInviteCollaboratorDialog={() => toggleDialog("invite")}
+            />
           </section>
           <p className={textClassnames}>2 views</p>
           <p className={textClassnames}>Last change was made 2 hours ago</p>
@@ -39,9 +53,14 @@ const MapFeatureList: React.FC<IMapFeatureList> = ({ map, layers }) => {
         </div>
       </div>
       <EditMapDetailsDialog
-        display={displayDialog}
-        onClose={() => setDisplayDialog(false)}
+        display={displayDialog.mapDetails}
+        onClose={() => toggleDialog("details", false)}
         map={map}
+      />
+      <InviteCollaboratorDialog
+        onClose={() => toggleDialog("invite", false)}
+        display={displayDialog.inviteCollaborator}
+        collaborators={map.users}
       />
     </>
   );

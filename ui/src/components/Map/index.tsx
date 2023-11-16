@@ -213,6 +213,8 @@ const MapComponent: React.FC<IMapComponentProps> = ({ map, setMap }) => {
     return <ErrorScreen msg={error} />;
   }
 
+  console.log('IM RE-RENDERED')
+
   return (
     <MapContext.Provider
       value={{

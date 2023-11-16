@@ -17,4 +17,5 @@ export const API_PATHS = {
   DELETE_MAP: "/maps/:mapId",
   UPDATE_MAP: "/maps/:mapId",
   SAVE_MARKER: "/markers",
+  INVITE_COLLABORATOR: "/collaborators",
 };

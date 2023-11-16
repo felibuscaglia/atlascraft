@@ -1,6 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ConflictException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Map } from 'entities';
+import { Map, User } from 'entities';
 import { FindOptionsWhere, Repository } from 'typeorm';
 import { DEFAULT_MAP_NAME } from './lib/constants';
 import { UsersService } from 'users/users.service';
@@ -52,5 +56,23 @@ export class MapsService {
       id: mapId,
       ...dto,
     });
+  }
+
+  public async addUser(id: string, user: User) {
+    const map = await this.findOne({ id }, ['users']);
+
+    if (!map) {
+      throw new NotFoundException('Map not found.');
+    }
+
+    if (map.users.find((user) => user.id === user.id)) {
+      throw new ConflictException(
+        `User with email '${user.email}' is already a collaborator for this map`,
+      );
+    }
+
+    map.users = [...map.users, user];
+
+    return await this.mapsRepository.save(map);
   }
 }

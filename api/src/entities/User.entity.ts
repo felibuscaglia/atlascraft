@@ -18,7 +18,7 @@ class User {
   @Column({ nullable: false, unique: true })
   email: string;
 
-  @Column({ type: 'varchar', nullable: false })
+  @Column({ type: 'varchar', nullable: false, select: false })
   password: string;
 
   @ManyToMany(() => Map, (map) => map.users)

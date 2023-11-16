@@ -8,6 +8,7 @@ import { MapsModule } from './maps/maps.module';
 import { MarkersModule } from './markers/markers.module';
 import { PlacesModule } from './places/places.module';
 import { LayersModule } from './layers/layers.module';
+import { CollaboratorsModule } from './collaborators/collaborators.module';
 import entities from './entities';
 
 @Module({
@@ -33,6 +34,7 @@ import entities from './entities';
     MarkersModule,
     PlacesModule,
     LayersModule,
+    CollaboratorsModule,
   ],
   controllers: [AppController],
   providers: [],

@@ -26,6 +26,8 @@ const MapFeatureList: React.FC<IMapFeatureList> = ({ map, layers }) => {
     });
   };
 
+  console.log({ map });
+
   return (
     <>
       <div className="fixed left-3 top-20 z-40 w-[21.7%] rounded-sm bg-secondary-brand-color">
@@ -61,6 +63,7 @@ const MapFeatureList: React.FC<IMapFeatureList> = ({ map, layers }) => {
         onClose={() => toggleDialog("invite", false)}
         display={displayDialog.inviteCollaborator}
         collaborators={map.users}
+        mapId={map.id}
       />
     </>
   );

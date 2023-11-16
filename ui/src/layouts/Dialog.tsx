@@ -1,5 +1,8 @@
 import { Dialog, Transition } from "@headlessui/react";
-import { PRIMARY_BRAND_COLOR } from "lib/constants/styles";
+import {
+  PRIMARY_BRAND_COLOR,
+  SECONDARY_BRAND_COLOR,
+} from "lib/constants/styles";
 import { Fragment } from "react";
 import { ClipLoader } from "react-spinners";
 import ErrorBanner from "components/Banners/Error";
@@ -30,7 +33,7 @@ const DialogLayout: React.FC<IDialogLayoutProps> = ({
   const btnColorClassnames =
     color === "danger"
       ? "border-transparent bg-red-100 text-red-900 focus-visible:ring-red-500 hover:bg-red-200"
-      : `border-primary-brand-color bg-primary-brand-color text-secondary-brand-color hover:text-primary-brand-color hover:bg-transparent`;
+      : `border-primary-brand-color bg-primary-brand-color text-secondary-brand-color disabled:bg-primary-brand-color disabled:cursor-not-allowed hover:text-primary-brand-color hover:bg-transparent`;
 
   return (
     <Transition appear show={display || performingAction} as={Fragment}>
@@ -75,9 +78,17 @@ const DialogLayout: React.FC<IDialogLayoutProps> = ({
                       btnColorClassnames
                     }
                     onClick={onButtonClick}
+                    disabled={performingAction}
                   >
                     {performingAction ? (
-                      <ClipLoader size={10} color={PRIMARY_BRAND_COLOR} />
+                      <ClipLoader
+                        size={20}
+                        color={
+                          performingAction && color === "brand"
+                            ? SECONDARY_BRAND_COLOR
+                            : PRIMARY_BRAND_COLOR
+                        }
+                      />
                     ) : (
                       <span>{btnText}</span>
                     )}

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'entities';
-import { FindOptionsWhere, Repository } from 'typeorm';
+import { FindOptionsSelect, FindOptionsWhere, Repository } from 'typeorm';
 
 @Injectable()
 export class UsersService {
@@ -12,10 +12,12 @@ export class UsersService {
   public findOne(
     whereOptions: FindOptionsWhere<User>,
     relations: string[] = [],
+    select?: FindOptionsSelect<User>
   ) {
     return this.usersRepository.findOne({
       where: whereOptions,
       relations,
+      select
     });
   }
 

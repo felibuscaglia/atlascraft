@@ -1,4 +1,5 @@
 import { IsNotEmpty, IsString, IsEmail } from 'class-validator';
+import { CUSTOM_EMAIL_ERROR_MESSAGE } from 'lib/constants';
 
 export class SignUpDto {
   @IsNotEmpty()
@@ -7,7 +8,7 @@ export class SignUpDto {
 
   @IsNotEmpty()
   @IsString()
-  @IsEmail()
+  @IsEmail({}, { message: CUSTOM_EMAIL_ERROR_MESSAGE })
   email: string;
 
   @IsNotEmpty()

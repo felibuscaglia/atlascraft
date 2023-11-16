@@ -31,6 +31,7 @@ export class MapsController {
       'layers',
       'layers.markers',
       'layers.markers.place',
+      'users',
     ]);
   }
 

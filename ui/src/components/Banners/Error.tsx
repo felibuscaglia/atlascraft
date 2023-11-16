@@ -13,7 +13,7 @@ const ErrorBanner: React.FC<IAuthFormErrorBannerProps> = ({
         fullWidth ? "w-full" : "w-1/3"
       } rounded border-2 bg-red-300 p-1 text-center text-base font-semibold`}
     >
-      {typeof error === "string" ? (
+      {typeof error === "string" || error.length === 1 ? (
         <span className="capitalize-first">{error}</span>
       ) : (
         <ul>

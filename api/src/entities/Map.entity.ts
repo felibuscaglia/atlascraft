@@ -21,6 +21,9 @@ class Map {
   @Column({ nullable: true })
   description?: string;
 
+  @Column({ nullable: true, default: 0 })
+  views: number;
+
   @ManyToMany(() => User, (user) => user.maps, { onDelete: 'CASCADE' })
   users: User[];
 
@@ -30,7 +33,7 @@ class Map {
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 
-  @OneToMany(() => Layer, (layer) => layer.map)
+  @OneToMany(() => Layer, (layer) => layer.map, { onDelete: 'CASCADE' })
   layers: Layer[];
 }
 

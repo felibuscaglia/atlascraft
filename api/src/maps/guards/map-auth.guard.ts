@@ -13,14 +13,19 @@ export class MapAuthGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext) {
     const request = context.switchToHttp().getRequest();
-    const mapId = request.params.mapId ?? request.body.mapId;
+    const mapId =
+      request.params.mapId ?? request.body.mapId ?? request.query.mapId;
+
+    if (!mapId) {
+      throw new ForbiddenException('You must provide a valid map id.');
+    }
 
     const map = await this.mapsService.findOne({ id: mapId }, ['users']);
 
     if (!map) {
       throw new NotFoundException('Map not found.');
     }
-    
+
     const userId = request.user?.id;
 
     const userOwnsMap =

@@ -137,6 +137,10 @@ li {
   border-top-color: var(--secondary-brand-color) !important;
 }
 
-.mapboxgl-marker:nth-child(3) {
+.mapboxgl-marker {
   display: none;
+}
+
+.custom-marker {
+  display: block !important;
 }

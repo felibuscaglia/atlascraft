@@ -15,7 +15,12 @@ export class AuthService {
   public async validateUser(email: string, password: string) {
     let result: Omit<User, 'password'> | null = null;
 
-    const user = await this.usersService.findOne({ email }, [], { password: true });
+    const user = await this.usersService.findOne({ email }, [], {
+      password: true,
+      fullName: true,
+      id: true,
+      email: true,
+    });
 
     if (user && (await compare(password, user.password))) {
       const { password, ...userData } = user;

@@ -106,6 +106,7 @@ const initializeMap = (
         color={SECONDARY_BRAND_COLOR}
       />,
     );
+    customMarker.className = "custom-marker";
 
     new mapboxgl.Marker(customMarker)
       .setLngLat(center as LngLatLike)
@@ -212,8 +213,6 @@ const MapComponent: React.FC<IMapComponentProps> = ({ map, setMap }) => {
   if (error) {
     return <ErrorScreen msg={error} />;
   }
-
-  console.log('IM RE-RENDERED')
 
   return (
     <MapContext.Provider

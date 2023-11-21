@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { MapsController } from './maps.controller';
 import { MapsService } from './maps.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -9,7 +9,11 @@ import { LayersModule } from 'layers/layers.module';
 @Module({
   controllers: [MapsController],
   providers: [MapsService],
-  imports: [TypeOrmModule.forFeature([Map]), UsersModule, LayersModule],
-  exports: [MapsService]
+  imports: [
+    TypeOrmModule.forFeature([Map]),
+    UsersModule,
+    forwardRef(() => LayersModule),
+  ],
+  exports: [MapsService],
 })
 export class MapsModule {}

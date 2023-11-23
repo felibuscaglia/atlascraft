@@ -1,24 +1,30 @@
 import { ILayer } from "lib/interfaces/entities";
-import { Eye } from "react-feather";
 import Marker from "./Marker";
+import Options from "./Options";
 
 interface IProps {
   layer: ILayer;
   selected: boolean;
+  updateLayerIndex: () => void;
 }
 
-const MapFeatureListLayer: React.FC<IProps> = ({ layer, selected }) => {
+const MapFeatureListLayer: React.FC<IProps> = ({
+  layer,
+  selected,
+  updateLayerIndex,
+}) => {
   return (
     <div
+      onClick={updateLayerIndex}
       className={`border-l-4 ${
-        selected ? "border-l-primary-brand-color" : "border-l-transparent"
+        selected
+          ? "border-l-primary-brand-color"
+          : "border-l-transparent hover:border-l-neutral-400"
       }`}
     >
       <section className="flex items-center justify-between px-3 pt-4">
         <h6 className="text-sm font-bold">{layer.name}</h6>
-        <button>
-          <Eye size={14} />
-        </button>
+        <Options layer={layer} />
       </section>
       {layer.markers.length ? (
         <section className="divide-y-primary-brand-color divide-y">

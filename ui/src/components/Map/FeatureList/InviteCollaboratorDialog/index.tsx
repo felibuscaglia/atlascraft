@@ -56,7 +56,7 @@ const MapFeatureListInviteCollaboratorDialog: React.FC<IProps> = ({
       onButtonClick={inviteCollaborator}
       btnText="Invite"
       color="brand"
-      error={error ?? undefined}
+      error={error || undefined}
     >
       <div className="my-4 w-full rounded-sm bg-neutral-200 p-2">
         <input

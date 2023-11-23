@@ -1,7 +1,16 @@
-import { Controller, Post, Query, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Param,
+  Patch,
+  Post,
+  Query,
+  UseGuards,
+  Body,
+} from '@nestjs/common';
 import { JwtGuard } from 'auth/guards';
 import { MapAuthGuard } from 'maps/guards';
 import { LayersService } from './layers.service';
+import { PatchLayerDto } from './dto/patch-layer.dto';
 
 @UseGuards(JwtGuard)
 @Controller('layers')
@@ -12,5 +21,11 @@ export class LayersController {
   @Post()
   async createLayer(@Query('mapId') mapId: string) {
     return await this.layersService.create(mapId);
+  }
+
+  @UseGuards(MapAuthGuard)
+  @Patch('/:layerId')
+  patchLayer(@Param('layerId') layerId: string, @Body() body: PatchLayerDto) {
+    return this.layersService.update(layerId, body);
   }
 }

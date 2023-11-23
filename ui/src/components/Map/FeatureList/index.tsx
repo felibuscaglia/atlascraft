@@ -14,12 +14,17 @@ import { MapContext } from "lib/contexts";
 
 interface IMapFeatureList {
   map: IMap;
-  layers: ILayer[];
+  selectedLayerIndex: number;
+  setSelectedLayerIndex: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const textClassnames = "text-sm opacity-70";
 
-const MapFeatureList: React.FC<IMapFeatureList> = ({ map, layers }) => {
+const MapFeatureList: React.FC<IMapFeatureList> = ({
+  map,
+  selectedLayerIndex,
+  setSelectedLayerIndex,
+}) => {
   const [displayDialog, setDisplayDialog] = useState({
     mapDetails: false,
     inviteCollaborator: false,
@@ -63,7 +68,7 @@ const MapFeatureList: React.FC<IMapFeatureList> = ({ map, layers }) => {
   return (
     <>
       <div className="fixed left-3 top-20 z-40 w-[21.7%] rounded-sm bg-secondary-brand-color">
-        <div className="py-4 pl-4 pr-1">
+        <div className="py-4 pl-4 pr-2">
           <section className="flex items-center justify-between">
             <h1
               onClick={() => toggleDialog("details")}
@@ -76,11 +81,10 @@ const MapFeatureList: React.FC<IMapFeatureList> = ({ map, layers }) => {
               displayInviteCollaboratorDialog={() => toggleDialog("invite")}
             />
           </section>
-          <p className={textClassnames}>
-            {map.views} {map.views === 1 ? "view" : "views"}
-          </p>
           <section className="flex items-center justify-between">
-            <p className={textClassnames}>Last change was made 2 hours ago</p>
+            <p className={textClassnames}>
+              {map.views} {map.views === 1 ? "view" : "views"}
+            </p>
             {performingAction && (
               <ClipLoader
                 size={10}
@@ -92,8 +96,13 @@ const MapFeatureList: React.FC<IMapFeatureList> = ({ map, layers }) => {
         </div>
         <Actions actions={actions} />
         <div>
-          {layers.map((layer, i) => (
-            <Layer layer={layer} selected key={`layer-${layer.id}`} />
+          {map.layers.map((layer, i) => (
+            <Layer
+              layer={layer}
+              selected={i === selectedLayerIndex}
+              updateLayerIndex={() => setSelectedLayerIndex(i)}
+              key={`layer-${layer.id}`}
+            />
           ))}
         </div>
       </div>

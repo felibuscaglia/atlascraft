@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Layer } from 'entities';
 import { MapsService } from 'maps/maps.service';
 import { FindOptionsWhere, Repository } from 'typeorm';
+import { PatchLayerDto } from './dto/patch-layer.dto';
 
 @Injectable()
 export class LayersService {
@@ -31,5 +32,12 @@ export class LayersService {
     }
 
     return this.layersRepository.save(newLayer);
+  }
+
+  public update(id: string, dto: PatchLayerDto) {
+    return this.layersRepository.save({
+      id,
+      ...dto,
+    });
   }
 }

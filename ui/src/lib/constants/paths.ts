@@ -19,4 +19,5 @@ export const API_PATHS = {
   SAVE_MARKER: "/markers",
   INVITE_COLLABORATOR: "/collaborators",
   CREATE_LAYER: "/layers?mapId=:mapId",
+  PATCH_LAYER: "/layers/:layerId?mapId=:mapId",
 };

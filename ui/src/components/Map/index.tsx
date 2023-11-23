@@ -131,8 +131,7 @@ interface IMapComponentProps {
 
 const MapComponent: React.FC<IMapComponentProps> = ({ map, setMap }) => {
   const [error, setError] = useState<string | null>(null);
-  const [layers, setLayers] = useState<ILayer[]>(map.layers);
-  const [selectedLayer, setSelectedLayer] = useState(0);
+  const [selectedLayerIndex, setSelectedLayerIndex] = useState(0);
   const [selectedMarker, setSelectedMarker] = useState<IMarker | null>(null);
 
   const axiosAuth = useAxiosAuth();
@@ -140,7 +139,7 @@ const MapComponent: React.FC<IMapComponentProps> = ({ map, setMap }) => {
   const mapContainer = useRef<HTMLDivElement | null>(null);
 
   const saveMarker = (result: MapboxGeocoder.Result) => {
-    const layerIndex = selectedLayer;
+    const layerIndex = selectedLayerIndex;
 
     const { center, text, place_name, id, place_type } = result;
 
@@ -151,22 +150,23 @@ const MapComponent: React.FC<IMapComponentProps> = ({ map, setMap }) => {
       name: place_name,
       externalId: id,
       mapId: map.id,
-      layerId: layers[layerIndex].id,
+      layerId: map.layers[layerIndex].id,
       type: place_type[0],
     };
 
     axiosAuth
       .post<IMarker>(API_PATHS.SAVE_MARKER, newMarker)
       .then(({ data }) => {
-        setLayers((prevLayers) => {
-          const updatedLayers = [...prevLayers];
+        const updatedLayers = [...map.layers];
 
-          updatedLayers[layerIndex].markers = [
-            ...updatedLayers[layerIndex].markers,
-            data,
-          ];
+        updatedLayers[layerIndex].markers = [
+          ...updatedLayers[layerIndex].markers,
+          data,
+        ];
 
-          return updatedLayers;
+        setMap({
+          ...map,
+          layers: updatedLayers,
         });
       })
       .catch((err) =>
@@ -181,9 +181,9 @@ const MapComponent: React.FC<IMapComponentProps> = ({ map, setMap }) => {
   useEffect(() => {
     if (!mapContainer.current) return;
 
-    const map = initializeMap(mapContainer, saveMarker);
+    const mapboxMap = initializeMap(mapContainer, saveMarker);
 
-    layers.forEach(({ markers }) => {
+    map.layers.forEach(({ markers }) => {
       markers.forEach(({ place, customDisplayName }) => {
         const customMarker = document.createElement("div");
         customMarker.innerHTML = ReactDOMServer.renderToString(
@@ -193,6 +193,7 @@ const MapComponent: React.FC<IMapComponentProps> = ({ map, setMap }) => {
             color={SECONDARY_BRAND_COLOR}
           />,
         );
+        customMarker.className = "custom-marker";
 
         new mapboxgl.Marker(customMarker)
           .setLngLat([place.latitude, place.longitude])
@@ -205,7 +206,7 @@ const MapComponent: React.FC<IMapComponentProps> = ({ map, setMap }) => {
               ),
             ),
           )
-          .addTo(map);
+          .addTo(mapboxMap);
       });
     });
   }, [map]);
@@ -219,10 +220,15 @@ const MapComponent: React.FC<IMapComponentProps> = ({ map, setMap }) => {
       value={{
         openMarkerDetailSidebar: (marker: IMarker) => setSelectedMarker(marker),
         setMap,
+        map,
       }}
     >
       <div ref={mapContainer} className="map-container flex w-full grow">
-        <FeatureList map={map} layers={layers} />
+        <FeatureList
+          map={map}
+          selectedLayerIndex={selectedLayerIndex}
+          setSelectedLayerIndex={setSelectedLayerIndex}
+        />
         {selectedMarker && (
           <MarkerDetailSidebar
             marker={selectedMarker}

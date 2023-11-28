@@ -1,3 +1,4 @@
+import { PRIMARY_BRAND_COLOR } from "lib/constants/styles";
 import { MapContext } from "lib/contexts";
 import { IMarker } from "lib/interfaces/entities";
 import { useContext } from "react";
@@ -16,9 +17,17 @@ const MapFeatureListLayerMarker: React.FC<IMarker> = (marker) => {
           {marker.customDisplayName || marker.place.displayName}
         </span>
       </section>
-      <button onClick={() => openMarkerDetailSidebar(marker)}>
-        <Edit size={ICON_SIZE} />
-      </button>
+      <section className="flex items-center gap-2">
+        <div className="rounded-full border-2 border-neutral-400 p-px">
+          <div
+            className="h-3 w-3 rounded-full"
+            style={{ backgroundColor: marker.color || PRIMARY_BRAND_COLOR }}
+          />
+        </div>
+        <button onClick={() => openMarkerDetailSidebar(marker)}>
+          <Edit size={ICON_SIZE} />
+        </button>
+      </section>
     </div>
   );
 };

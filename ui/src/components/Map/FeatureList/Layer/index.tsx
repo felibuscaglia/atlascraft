@@ -16,7 +16,7 @@ const MapFeatureListLayer: React.FC<IProps> = ({
   return (
     <div
       onClick={updateLayerIndex}
-      className={`border-l-4 ${
+      className={`border-l-4 border-b border-b-neutral-200 ${
         selected
           ? "border-l-primary-brand-color"
           : "border-l-transparent hover:border-l-neutral-400"
@@ -26,7 +26,7 @@ const MapFeatureListLayer: React.FC<IProps> = ({
         <h6 className="text-sm font-bold">{layer.name}</h6>
         <Options layer={layer} />
       </section>
-      {layer.markers.length ? (
+      {layer.markers?.length ? (
         <section className="divide-y-primary-brand-color divide-y">
           {layer.markers.map((marker) => (
             <Marker

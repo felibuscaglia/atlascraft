@@ -1,4 +1,11 @@
-import { Controller, Post, Body, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  UseGuards,
+  Delete,
+  Param,
+} from '@nestjs/common';
 import { SaveMarkerDto } from './dto';
 import { MarkersService } from './markers.service';
 import { MapAuthGuard } from 'maps/guards';
@@ -14,5 +21,11 @@ export class MarkersController {
   async saveMarker(@Body() saveMarkerDto: SaveMarkerDto) {
     const { layer, ...marker } = await this.markersService.save(saveMarkerDto);
     return marker;
+  }
+
+  @Delete('/:markerId')
+  @UseGuards(MapAuthGuard)
+  deleteMarker(@Param('markerId') markerId: string) {
+    return this.markersService.delete(markerId);
   }
 }

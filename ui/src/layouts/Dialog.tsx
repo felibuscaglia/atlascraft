@@ -6,35 +6,31 @@ import {
 import { Fragment } from "react";
 import { ClipLoader } from "react-spinners";
 import ErrorBanner from "components/Banners/Error";
+import ActionButton from "components/ActionButton";
 
 interface IDialogLayoutProps {
   display: boolean;
-  performingAction: boolean;
+  performingAction?: boolean;
   onDialogClose: () => void;
   children: React.ReactNode;
-  onButtonClick: () => void;
+  onButtonClick?: () => void;
   title: string;
-  btnText: string;
+  btnText?: string;
   color: "danger" | "brand";
   error?: string | string[];
 }
 
 const DialogLayout: React.FC<IDialogLayoutProps> = ({
   display,
-  performingAction,
+  performingAction = false,
   onDialogClose,
   children,
   onButtonClick,
   title,
-  btnText,
+  btnText = "",
   color,
   error,
 }) => {
-  const btnColorClassnames =
-    color === "danger"
-      ? "border-transparent bg-red-100 text-red-900 focus-visible:ring-red-500 hover:bg-red-200"
-      : `border-primary-brand-color bg-primary-brand-color text-secondary-brand-color disabled:bg-primary-brand-color disabled:cursor-not-allowed hover:text-primary-brand-color hover:bg-transparent`;
-
   return (
     <Transition appear show={display || performingAction} as={Fragment}>
       <Dialog as="div" className="relative z-50" onClose={onDialogClose}>
@@ -71,28 +67,15 @@ const DialogLayout: React.FC<IDialogLayoutProps> = ({
                 {error && <ErrorBanner fullWidth error={error} />}
                 {children}
                 <div className="mt-4 flex items-center gap-4">
-                  <button
-                    type="button"
-                    className={
-                      "inline-flex justify-center rounded-md border px-4 py-2 text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 " +
-                      btnColorClassnames
-                    }
-                    onClick={onButtonClick}
-                    disabled={performingAction}
-                  >
-                    {performingAction ? (
-                      <ClipLoader
-                        size={20}
-                        color={
-                          performingAction && color === "brand"
-                            ? SECONDARY_BRAND_COLOR
-                            : PRIMARY_BRAND_COLOR
-                        }
-                      />
-                    ) : (
-                      <span>{btnText}</span>
-                    )}
-                  </button>
+                  {onButtonClick && (
+                    <ActionButton
+                      color={color}
+                      onClick={onButtonClick}
+                      performingAction={performingAction}
+                      text={btnText}
+                      textSize="small"
+                    />
+                  )}
                   <button
                     disabled={performingAction}
                     onClick={onDialogClose}

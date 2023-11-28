@@ -21,9 +21,6 @@ class Map {
   @Column({ nullable: true })
   description?: string;
 
-  @Column({ nullable: true, default: 0 })
-  views: number;
-
   @ManyToMany(() => User, (user) => user.maps, { onDelete: 'CASCADE' })
   users: User[];
 

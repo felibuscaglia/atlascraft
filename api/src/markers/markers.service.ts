@@ -13,10 +13,12 @@ export class MarkersService {
     private readonly layersService: LayersService,
     @InjectRepository(Marker)
     private readonly markersRepository: Repository<Marker>,
-  ) { }
+  ) {}
 
   public async save(saveMarkerDto: SaveMarkerDto) {
-    const layer = await this.layersService.findOne({ id: saveMarkerDto.layerId });
+    const layer = await this.layersService.findOne({
+      id: saveMarkerDto.layerId,
+    });
 
     if (!layer) {
       throw new InternalServerErrorException('Something unexpected happened.');
@@ -32,6 +34,10 @@ export class MarkersService {
     }
 
     return this.create(place, layer);
+  }
+
+  public delete(id: string) {
+    return this.markersRepository.delete({ id });
   }
 
   private create(place: Place, layer: Layer) {

@@ -2,9 +2,9 @@ import { ILayer, IMap } from "lib/interfaces/entities";
 import Actions from "./Actions";
 import Layer from "./Layer";
 import Options from "./Options";
-import EditMapDetailsDialog from "./EditMapDetailsDialog";
+import EditMapDetailsDialog from "./Dialogs/EditMapDetailsDialog";
 import { useState, useContext } from "react";
-import InviteCollaboratorDialog from "./InviteCollaboratorDialog";
+import InviteCollaboratorDialog from "./Dialogs/InviteCollaboratorDialog";
 import { Eye, Layers, UserPlus } from "react-feather";
 import { ClipLoader } from "react-spinners";
 import { PRIMARY_BRAND_COLOR } from "lib/constants/styles";
@@ -29,7 +29,7 @@ const MapFeatureList: React.FC<IMapFeatureList> = ({
     mapDetails: false,
     inviteCollaborator: false,
   });
-  const [performingAction, setPerformingAction] = useState(false);
+  const [creatingLayer, setCreatingLayer] = useState(false);
 
   const { setMap } = useContext(MapContext);
 
@@ -43,7 +43,7 @@ const MapFeatureList: React.FC<IMapFeatureList> = ({
   };
 
   const createLayer = () => {
-    setPerformingAction(true);
+    setCreatingLayer(true);
 
     const path = API_PATHS.CREATE_LAYER.replace(":mapId", map.id);
 
@@ -54,7 +54,7 @@ const MapFeatureList: React.FC<IMapFeatureList> = ({
           ...map,
           layers: [...map.layers, newLayer],
         });
-        setPerformingAction(false);
+        setCreatingLayer(false);
       })
       .catch((err) => console.error(err));
   };
@@ -81,18 +81,13 @@ const MapFeatureList: React.FC<IMapFeatureList> = ({
               displayInviteCollaboratorDialog={() => toggleDialog("invite")}
             />
           </section>
-          <section className="flex items-center justify-between">
-            <p className={textClassnames}>
-              {map.views} {map.views === 1 ? "view" : "views"}
-            </p>
-            {performingAction && (
+            {creatingLayer && (
               <ClipLoader
-                size={10}
-                className="mr-1"
+                size={14}
+                className="mt-2"
                 color={PRIMARY_BRAND_COLOR}
               />
             )}
-          </section>
         </div>
         <Actions actions={actions} />
         <div>

@@ -5,6 +5,7 @@ import SignInScreen from "screens/SignIn";
 import SignUpScreen from "screens/SignUp";
 import MapEditorScreen from "screens/MapEditor";
 import { Toaster } from "react-hot-toast";
+import MapViewerScreen from "screens/MapViewer";
 
 const App = () => {
   return (
@@ -13,6 +14,7 @@ const App = () => {
         <Routes>
           <Route index element={<HomeScreen />} />
           <Route path={UI_PATHS.EDIT_MAP} element={<MapEditorScreen />} />
+          <Route path={UI_PATHS.VIEW_MAP} element={<MapViewerScreen />} />
           <Route path={UI_PATHS.SIGN_UP} element={<SignUpScreen />} />
           <Route path={UI_PATHS.SIGN_IN} element={<SignInScreen />} />
         </Routes>

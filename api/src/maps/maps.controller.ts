@@ -24,8 +24,8 @@ export class MapsController {
     return this.mapsService.findByUserId(userId);
   }
 
-  @UseGuards(MapAuthGuard)
   @Get('/:mapId')
+  @UseGuards(MapAuthGuard)
   async getMapById(@Param('mapId') mapId: string) {
     return this.mapsService.findOne({ id: mapId }, [
       'layers',
@@ -35,12 +35,18 @@ export class MapsController {
     ]);
   }
 
+  @Get('/:mapId/view')
+  async getMapView(@Param('mapId') mapId: string) {
+    return this.getMapById(mapId);
+  }
+
   @Post()
   createMap(@CurrentUser('id') userId: string) {
     return this.mapsService.create(userId);
   }
 
   @Delete('/:mapId')
+  @UseGuards(MapAuthGuard)
   async deleteMap(@Param('mapId') mapId: string) {
     await this.mapsService.delete(mapId);
 
@@ -48,6 +54,7 @@ export class MapsController {
   }
 
   @Patch('/:mapId')
+  @UseGuards(MapAuthGuard)
   async updateMap(
     @Param('mapId') mapId: string,
     @Body() updateMapDto: UpdateMapDto,

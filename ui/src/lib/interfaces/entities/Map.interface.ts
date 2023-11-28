@@ -9,5 +9,4 @@ export interface IMap {
   updatedAt: Date;
   layers: ILayer[];
   users: IUser[];
-  views: number;
 }

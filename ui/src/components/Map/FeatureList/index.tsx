@@ -11,6 +11,13 @@ import { PRIMARY_BRAND_COLOR } from "lib/constants/styles";
 import useAxiosAuth from "lib/hooks/useAxiosAuth";
 import { API_PATHS } from "lib/constants/paths";
 import { MapContext } from "lib/contexts";
+import ShareMapDialog from "./Dialogs/ShareMapDialog";
+
+interface IDialogDisplay {
+  mapDetails: boolean;
+  inviteCollaborator: boolean;
+  shareMap: boolean;
+}
 
 interface IMapFeatureList {
   map: IMap;
@@ -18,16 +25,15 @@ interface IMapFeatureList {
   setSelectedLayerIndex: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const textClassnames = "text-sm opacity-70";
-
 const MapFeatureList: React.FC<IMapFeatureList> = ({
   map,
   selectedLayerIndex,
   setSelectedLayerIndex,
 }) => {
-  const [displayDialog, setDisplayDialog] = useState({
+  const [displayDialog, setDisplayDialog] = useState<IDialogDisplay>({
     mapDetails: false,
     inviteCollaborator: false,
+    shareMap: false,
   });
   const [creatingLayer, setCreatingLayer] = useState(false);
 
@@ -35,10 +41,10 @@ const MapFeatureList: React.FC<IMapFeatureList> = ({
 
   const axiosAuth = useAxiosAuth();
 
-  const toggleDialog = (type: "details" | "invite", open = true) => {
+  const toggleDialog = (key: keyof IDialogDisplay, open = true) => {
     setDisplayDialog({
       ...displayDialog,
-      [type === "details" ? "mapDetails" : "inviteCollaborator"]: open,
+      [key]: open,
     });
   };
 
@@ -61,7 +67,11 @@ const MapFeatureList: React.FC<IMapFeatureList> = ({
 
   const actions = [
     { text: "Add layer", icon: Layers, onClick: createLayer },
-    { text: "Share", icon: UserPlus, onClick: () => {} },
+    {
+      text: "Share",
+      icon: UserPlus,
+      onClick: () => setDisplayDialog({ ...displayDialog, shareMap: true }),
+    },
     { text: "Preview", icon: Eye, onClick: () => {} },
   ];
 
@@ -71,23 +81,25 @@ const MapFeatureList: React.FC<IMapFeatureList> = ({
         <div className="py-4 pl-4 pr-2">
           <section className="flex items-center justify-between">
             <h1
-              onClick={() => toggleDialog("details")}
+              onClick={() => toggleDialog("mapDetails")}
               className="mb-1 cursor-pointer text-xl font-semibold"
             >
               {map.name}
             </h1>
             <Options
-              displayEditMapDetailsDialog={() => toggleDialog("details")}
-              displayInviteCollaboratorDialog={() => toggleDialog("invite")}
+              displayEditMapDetailsDialog={() => toggleDialog("mapDetails")}
+              displayInviteCollaboratorDialog={() =>
+                toggleDialog("inviteCollaborator")
+              }
             />
           </section>
-            {creatingLayer && (
-              <ClipLoader
-                size={14}
-                className="mt-2"
-                color={PRIMARY_BRAND_COLOR}
-              />
-            )}
+          {creatingLayer && (
+            <ClipLoader
+              size={14}
+              className="mt-2"
+              color={PRIMARY_BRAND_COLOR}
+            />
+          )}
         </div>
         <Actions actions={actions} />
         <div>
@@ -103,13 +115,18 @@ const MapFeatureList: React.FC<IMapFeatureList> = ({
       </div>
       <EditMapDetailsDialog
         display={displayDialog.mapDetails}
-        onClose={() => toggleDialog("details", false)}
+        onClose={() => toggleDialog("mapDetails", false)}
         map={map}
       />
       <InviteCollaboratorDialog
-        onClose={() => toggleDialog("invite", false)}
+        onClose={() => toggleDialog("mapDetails", false)}
         display={displayDialog.inviteCollaborator}
         collaborators={map.users}
+        mapId={map.id}
+      />
+      <ShareMapDialog
+        display={displayDialog.shareMap}
+        onClose={() => toggleDialog("shareMap")}
         mapId={map.id}
       />
     </>

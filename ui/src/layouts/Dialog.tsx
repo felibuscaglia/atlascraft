@@ -12,7 +12,7 @@ interface IDialogLayoutProps {
   display: boolean;
   performingAction?: boolean;
   onDialogClose: () => void;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   onButtonClick?: () => void;
   title: string;
   btnText?: string;

@@ -23,4 +23,5 @@ export const API_PATHS = {
   INVITE_COLLABORATOR: "/collaborators",
   CREATE_LAYER: "/layers?mapId=:mapId",
   PATCH_LAYER: "/layers/:layerId?mapId=:mapId",
+  DELETE_LAYER: "/layers/:layerId?mapId=:mapId",
 };

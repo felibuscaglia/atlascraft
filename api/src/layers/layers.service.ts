@@ -40,4 +40,8 @@ export class LayersService {
       ...dto,
     });
   }
+
+  public delete(id: string) {
+    return this.layersRepository.delete(id);
+  }
 }

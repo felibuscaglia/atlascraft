@@ -6,6 +6,7 @@ import {
   Query,
   UseGuards,
   Body,
+  Delete,
 } from '@nestjs/common';
 import { JwtGuard } from 'auth/guards';
 import { MapAuthGuard } from 'maps/guards';
@@ -27,5 +28,11 @@ export class LayersController {
   @Patch('/:layerId')
   patchLayer(@Param('layerId') layerId: string, @Body() body: PatchLayerDto) {
     return this.layersService.update(layerId, body);
+  }
+
+  @UseGuards(MapAuthGuard)
+  @Delete('/:layerId')
+  deleteLayer(@Param('layerId') layerId: string) {
+    return this.layersService.delete(layerId);
   }
 }

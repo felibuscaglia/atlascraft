@@ -5,6 +5,7 @@ export interface IMap {
   id: string;
   name: string;
   description?: string;
+  isPublic: boolean;
   createdAt: Date;
   updatedAt: Date;
   layers: ILayer[];

@@ -38,7 +38,10 @@ const EditMapDetailsDialog: React.FC<IEditMapDetailsDialogProps> = ({
     axiosAuth
       .patch<IMap>(apiPath, input)
       .then(({ data }) => {
-        setMap(data);
+        setMap({
+          ...map,
+          ...data,
+        });
         setUpdatingMapDetails(false);
         onClose();
       })

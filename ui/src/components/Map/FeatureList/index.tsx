@@ -9,9 +9,10 @@ import { Eye, Layers, UserPlus } from "react-feather";
 import { ClipLoader } from "react-spinners";
 import { PRIMARY_BRAND_COLOR } from "lib/constants/styles";
 import useAxiosAuth from "lib/hooks/useAxiosAuth";
-import { API_PATHS } from "lib/constants/paths";
+import { API_PATHS, UI_PATHS } from "lib/constants/paths";
 import { MapContext } from "lib/contexts";
 import ShareMapDialog from "./Dialogs/ShareMapDialog";
+import { useNavigate } from "react-router-dom";
 
 interface IDialogDisplay {
   mapDetails: boolean;
@@ -40,6 +41,7 @@ const MapFeatureList: React.FC<IMapFeatureList> = ({
   const { setMap } = useContext(MapContext);
 
   const axiosAuth = useAxiosAuth();
+  const navigate = useNavigate();
 
   const toggleDialog = (key: keyof IDialogDisplay, open = true) => {
     setDisplayDialog({
@@ -72,7 +74,11 @@ const MapFeatureList: React.FC<IMapFeatureList> = ({
       icon: UserPlus,
       onClick: () => setDisplayDialog({ ...displayDialog, shareMap: true }),
     },
-    { text: "Preview", icon: Eye, onClick: () => {} },
+    {
+      text: "Preview",
+      icon: Eye,
+      onClick: () => navigate(UI_PATHS.VIEW_MAP.replace(":mapId", map.id)),
+    },
   ];
 
   return (
@@ -126,8 +132,8 @@ const MapFeatureList: React.FC<IMapFeatureList> = ({
       />
       <ShareMapDialog
         display={displayDialog.shareMap}
-        onClose={() => toggleDialog("shareMap")}
-        mapId={map.id}
+        onClose={() => toggleDialog("shareMap", false)}
+        map={map}
       />
     </>
   );

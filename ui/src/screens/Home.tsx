@@ -30,7 +30,7 @@ const HomeScreen = () => {
       .then(({ data }) =>
         navigate(`${UI_PATHS.EDIT_MAP.replace(":mapId", data.id)}`),
       )
-      .catch((err) => {
+      .catch(() => {
         toast.error(UNEXPECTED_ERROR_MSG);
         setCreatingMap(false);
       });

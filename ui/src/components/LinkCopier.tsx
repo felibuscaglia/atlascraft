@@ -1,4 +1,6 @@
+import React, { useState } from "react";
 import { Copy } from "react-feather";
+import { Tooltip } from "react-tooltip";
 
 interface IProps {
   url: string;
@@ -8,6 +10,8 @@ interface IProps {
 const MAX_URL_LENGTH = 53;
 
 const LinkCopier: React.FC<IProps> = ({ url, withOriginPrefix = true }) => {
+  const [tooltipVisible, setTooltipVisible] = useState(false);
+
   let displayUrl: string | undefined = undefined;
 
   if (withOriginPrefix) {
@@ -18,12 +22,31 @@ const LinkCopier: React.FC<IProps> = ({ url, withOriginPrefix = true }) => {
     displayUrl = url.slice(0, MAX_URL_LENGTH - 3) + "...";
   }
 
+  const handleCopyClick = () => {
+    navigator.clipboard.writeText(url);
+
+    setTooltipVisible(true);
+    setTimeout(() => setTooltipVisible(false), 2000);
+  };
+
   return (
-    <div className="rounded border border-primary-brand-color flex items-center justify-between">
-      <span className="text-sm p-2">{displayUrl ?? url}</span>
-      <button className="bg-primary-brand-color p-2">
-        <Copy color='white' />
-      </button>
+    <div className="flex items-center justify-between rounded border border-primary-brand-color">
+      <span className="p-2 text-sm" data-tip={tooltipVisible ? "Copied!" : ""}>
+        {displayUrl ?? url}
+      </span>
+      <a
+        data-tooltip-id="link-copier-tooltip"
+        className="bg-primary-brand-color p-2"
+        onClick={handleCopyClick}
+      >
+        <Copy color="white" />
+      </a>
+      <Tooltip
+        id="link-copier-tooltip"
+        content="Copied!"
+        openOnClick
+        isOpen={tooltipVisible}
+      />
     </div>
   );
 };

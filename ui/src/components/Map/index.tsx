@@ -183,7 +183,7 @@ const MapComponent: React.FC<IMapComponentProps> = ({ map, setMap }) => {
 
     const mapboxMap = initializeMap(mapContainer, saveMarker);
 
-    map.layers.forEach(({ markers }) => {
+    map.layers.forEach(({ markers = [] }) => {
       markers.forEach(({ place, customDisplayName }) => {
         const customMarker = document.createElement("div");
         customMarker.innerHTML = ReactDOMServer.renderToString(

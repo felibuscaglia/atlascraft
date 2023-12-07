@@ -65,6 +65,7 @@ const MapMarkerDetailSidebar: React.FC<IMapMarkerDetailSidebarProps> = ({
         <Notepad />
         <PlacesList buttonText="Regions" type={PLACE_TYPE.REGION} />
       </section>
+      <span>Edit marker details</span>
       <ActionButton
         color="danger"
         onClick={removeMarker}

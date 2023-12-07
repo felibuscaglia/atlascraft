@@ -1,3 +1,4 @@
+import Input from "components/Input";
 import DialogLayout from "layouts/Dialog";
 import { UNEXPECTED_ERROR_MSG } from "lib/constants/error-messages";
 import { API_PATHS } from "lib/constants/paths";
@@ -22,7 +23,10 @@ const EditMarkerDialog: React.FC<IProps> = ({
   marker,
   layerId,
 }) => {
-  const [input, setInput] = useState({ color: marker.color });
+  const [input, setInput] = useState({
+    color: marker.color,
+    customDisplayName: marker.customDisplayName,
+  });
   const [isUpdatingMarker, setIsUpdatingMarker] = useState(false);
 
   const { map, setMap } = useContext(MapContext);
@@ -59,7 +63,7 @@ const EditMarkerDialog: React.FC<IProps> = ({
         setIsUpdatingMarker(false);
         onClose();
       })
-      .catch((err) => {
+      .catch(() => {
         toast.error(UNEXPECTED_ERROR_MSG);
         setIsUpdatingMarker(false);
       });
@@ -75,7 +79,15 @@ const EditMarkerDialog: React.FC<IProps> = ({
       onButtonClick={handleSubmit}
       performingAction={isUpdatingMarker}
     >
-      <span>Color</span>
+      <Input
+        id="customDisplayName"
+        label="Display name"
+        value={input.customDisplayName || ""}
+        onChange={(e) =>
+          setInput({ ...input, customDisplayName: e.target.value })
+        }
+      />
+      <span className="mt-4 block">Color</span>
       <TwitterPicker
         triangle="hide"
         color={input.color}

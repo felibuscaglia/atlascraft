@@ -43,7 +43,6 @@ const OptionsEditNameDialog: React.FC<IProps> = ({
         );
         updatedLayers[layerToUpdateIndex] = { ...layer, ...updatedLayer };
 
-        console.log({ updatedLayers });
         setMap({
           ...map,
           layers: updatedLayers,

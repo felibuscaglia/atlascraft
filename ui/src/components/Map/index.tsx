@@ -71,15 +71,6 @@ const initializeMap = (
   );
   searchBtn.innerHTML = searchIconHTML;
 
-  const customMarker = document.createElement("div");
-  customMarker.innerHTML = ReactDOMServer.renderToString(
-    <MapPin
-      size={35}
-      fill={PRIMARY_BRAND_COLOR}
-      color={SECONDARY_BRAND_COLOR}
-    />,
-  );
-
   const geocoder = new MapboxGeocoder({
     accessToken: mapboxgl.accessToken,
     mapboxgl: mapboxgl,
@@ -184,12 +175,12 @@ const MapComponent: React.FC<IMapComponentProps> = ({ map, setMap }) => {
     const mapboxMap = initializeMap(mapContainer, saveMarker);
 
     map.layers.forEach(({ markers = [] }) => {
-      markers.forEach(({ place, customDisplayName }) => {
+      markers.forEach(({ place, customDisplayName, color }) => {
         const customMarker = document.createElement("div");
         customMarker.innerHTML = ReactDOMServer.renderToString(
           <MapPin
             size={35}
-            fill={PRIMARY_BRAND_COLOR}
+            fill={color}
             color={SECONDARY_BRAND_COLOR}
           />,
         );

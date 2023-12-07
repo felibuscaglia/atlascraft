@@ -47,6 +47,14 @@ const UserActions = () => {
                 <span>Maps</span>
               </button>
             </Menu.Item>
+            <Menu.Item>
+              <button
+                className={MENU_BUTTON_CLASSNAMES}
+              >
+                <User size={12} />
+                <span>Profile</span>
+              </button>
+            </Menu.Item>
           </div>
           <div className="px-1 py-1">
             <Menu.Item>

@@ -5,6 +5,7 @@ import { Layer, Marker, Place } from 'entities';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { LayersService } from 'layers/layers.service';
+import { UpdateMarkerDto } from './dto/update-marker.dto';
 
 @Injectable()
 export class MarkersService {
@@ -38,6 +39,13 @@ export class MarkersService {
 
   public delete(id: string) {
     return this.markersRepository.delete({ id });
+  }
+
+  public update(id: string, dto: UpdateMarkerDto) {
+    return this.markersRepository.save({
+      id,
+      ...dto,
+    });
   }
 
   private create(place: Place, layer: Layer) {

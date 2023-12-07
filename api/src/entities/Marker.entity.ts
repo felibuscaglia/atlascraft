@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 import Place from './Place.entity';
 import Layer from './Layer.entity';
+import { PRIMARY_BRAND_COLOR } from 'lib/constants';
 
 @Entity('marker')
 class Marker {
@@ -17,8 +18,8 @@ class Marker {
   @Column({ nullable: true })
   customDisplayName?: string;
 
-  @Column({ nullable: true })
-  color?: string;
+  @Column({ nullable: true, default: PRIMARY_BRAND_COLOR })
+  color: string;
 
   @OneToOne(() => Place, { onDelete: 'CASCADE' })
   @JoinColumn()
